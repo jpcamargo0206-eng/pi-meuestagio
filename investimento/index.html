@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14183A">
+<title>Meu Estágio · Investimento no sistema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Mesma identidade da apresentação do Ranan (Meu Estágio). Layout: seções em tela cheia, uma por assunto, com cabeçalho fixo e navegação por pontos. */
+  --night:#14183A; --night2:#1B2150; --indigo:#3B4BB3; --deep:#27338A; --sun:#F6B92B;
+  --paper:#F6F4EE; --lav:#DCE0F7; --lavm:#8A97D8; --mist:#AEB6EA; --dim:#7D86C2;
+  --line:rgba(138,151,216,.26);
+  --fd:"Sora",system-ui,sans-serif; --fb:"DM Sans",system-ui,sans-serif;
+  --gut:clamp(20px,6vw,112px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;background:var(--night);color:var(--paper);font-family:var(--fb);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input{font:inherit}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* Fundo */
+#ceu{position:fixed;inset:0;z-index:0;pointer-events:none}
+.brilho{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(60% 50% at 50% 12%,rgba(59,75,179,.38),transparent 70%),
+             radial-gradient(40% 40% at 0% 100%,rgba(246,185,43,.07),transparent 70%),
+             linear-gradient(rgba(138,151,216,.04) 1px,transparent 1px) 0 0/64px 64px,
+             linear-gradient(90deg,rgba(138,151,216,.04) 1px,transparent 1px) 0 0/64px 64px}
+
+/* Cabeçalho, progresso e pontos */
+.progresso{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--indigo),var(--sun));z-index:20;width:0}
+header.top{position:fixed;top:0;left:0;right:0;z-index:15;display:flex;justify-content:space-between;align-items:center;padding:14px var(--gut);background:linear-gradient(var(--night),rgba(20,24,58,0))}
+.marca{display:flex;align-items:center;gap:8px;font-family:var(--fd);font-weight:700;font-size:13px;letter-spacing:-.01em}
+.marca svg{width:22px;height:18px}
+.data{font-family:var(--fd);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+nav.dots{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:15;display:flex;flex-direction:column;gap:9px}
+nav.dots a{width:9px;height:9px;border-radius:50%;border:1.4px solid var(--lavm);display:block}
+nav.dots a.on{background:var(--sun);border-color:var(--sun)}
+
+/* Seções */
+main{position:relative;z-index:1}
+section.tela{min-height:100svh;padding:96px var(--gut) 72px;display:flex;flex-direction:column;justify-content:center}
+.miolo{width:100%;max-width:1100px;margin:0 auto}
+.eyebrow{font-family:var(--fd);font-size:13px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--sun);display:flex;align-items:center;gap:12px;margin:0 0 14px}
+.eyebrow::before{content:"";width:22px;height:1.5px;background:var(--sun)}
+h2.titulo{font-family:var(--fd);font-weight:700;font-size:clamp(34px,5.2vw,72px);line-height:1.04;letter-spacing:-.025em;margin:0 0 clamp(26px,4vw,44px);text-wrap:balance;max-width:20ch}
+h2.titulo em{font-style:normal;color:var(--sun)}
+.nota{font-size:13px;color:var(--dim);margin:18px 0 0}
+
+/* Combinado claro */
+.fases{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.fase{border-radius:22px;padding:26px 26px 28px}
+.fase.f1{background:var(--indigo);border:1.2px solid var(--indigo)}
+.fase.f2{background:rgba(27,33,80,.7);border:1.2px solid var(--line)}
+.tag{display:inline-block;font-family:var(--fd);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:5px 10px;margin-bottom:16px}
+.f1 .tag{background:var(--sun);color:var(--night)}
+.f2 .tag{background:rgba(220,224,247,.12);color:var(--lav)}
+.fase ul{list-style:none;margin:0;padding:0;display:grid;gap:9px;font-size:15px}
+.fase li{display:grid;grid-template-columns:18px 1fr;gap:6px;align-items:start}
+.f1 li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--sun);margin-top:7px}
+.f2 li::before{content:"";width:9px;height:9px;border-radius:50%;border:1.4px solid var(--lav);margin-top:6px}
+.fase small{display:block;margin-top:16px;font-size:12px;color:var(--mist);line-height:1.5}
+
+/* Como funciona */
+.trilha{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;padding-top:30px}
+.trilha::before{content:"";position:absolute;top:8px;left:8px;right:0;height:2px;background:linear-gradient(90deg,var(--sun),var(--sun) 66%,rgba(246,185,43,.4))}
+.passo{position:relative}
+.passo::before{content:"";position:absolute;top:-30px;left:0;width:14px;height:14px;border-radius:50%;border:2px solid var(--sun);background:var(--night)}
+.passo h3{font-family:var(--fd);font-weight:700;font-size:clamp(20px,2.2vw,28px);margin:0 0 8px;letter-spacing:-.01em}
+.passo p{margin:0 0 12px;font-size:14.5px;color:var(--mist);max-width:34ch}
+.chipz{display:inline-block;font-family:var(--fd);font-size:10.5px;font-weight:700;letter-spacing:.06em;border-radius:999px;padding:4px 10px;background:rgba(220,224,247,.12);color:var(--lav)}
+.chipz.sol{background:var(--sun);color:var(--night);text-transform:uppercase}
+.gigante{font-family:var(--fd);font-weight:800;font-size:clamp(56px,10vw,140px);line-height:.95;letter-spacing:-.04em;color:var(--sun);margin:clamp(30px,5vw,56px) 0 6px;font-variant-numeric:tabular-nums}
+.sub{color:var(--lav);font-size:16px;margin:0}
+
+/* Simulador (estrutura e valores do modelo aprovado, na identidade do site) */
+.modes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.mode{flex:1 1 220px;text-align:left;border:1.2px solid var(--line);background:rgba(27,33,80,.7);border-radius:14px;color:var(--lav);padding:12px 16px;font-family:var(--fd);font-size:14px;cursor:pointer;transition:.15s}
+.mode small{display:block;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:3px}
+.mode.on{background:var(--paper);border-color:var(--paper);color:var(--night)}
+.mode.on small{color:var(--indigo)}
+.simcard{background:rgba(27,33,80,.78);border:1.2px solid var(--line);border-top:5px solid var(--indigo);border-radius:22px;display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:32px;backdrop-filter:blur(6px)}
+.sec{margin-bottom:20px}
+.sec-t{font-family:var(--fd);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin:0 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.chip{border:1.2px solid var(--line);background:rgba(220,224,247,.08);border-radius:999px;padding:8px 14px;font-size:14px;color:var(--lav);cursor:pointer}
+.chip:hover{border-color:var(--lavm)}
+.chip.on{background:var(--indigo);border-color:var(--indigo);color:#fff}
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.step label{display:block;font-size:12px;color:var(--dim);margin-bottom:8px}
+.step .row{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:6px}
+.step button{width:30px;height:30px;border-radius:8px;border:1.2px solid var(--line);background:rgba(220,224,247,.08);font-size:16px;cursor:pointer;color:var(--lav)}
+.step input{width:70px;text-align:center;border:0;font-family:var(--fd);font-size:20px;color:var(--paper);background:transparent}
+.items{border-top:1px solid var(--line)}
+.item{display:grid;grid-template-columns:20px 1fr auto;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);cursor:pointer;font-size:13.5px}
+.item input{accent-color:var(--sun);width:15px;height:15px;margin:0}
+.item .hr{color:var(--dim);font-size:12px;margin-left:5px;white-space:nowrap}
+.item .pr{text-align:right;white-space:nowrap}
+.item .pr small{color:var(--dim);font-size:11.5px;margin-left:6px}
+.item.off .nm,.item.off .pr{opacity:.4}
+.notinha{font-size:12px;line-height:1.5;color:var(--mist);border-left:3px solid var(--sun);padding:6px 10px;margin-top:10px;background:rgba(246,185,43,.06);border-radius:0 8px 8px 0}
+.notinha b{color:var(--paper);font-weight:600}
+/* Opção 3 compacta */
+.parcial .sec{margin-bottom:14px}
+.parcial .chip{padding:5px 11px;font-size:13px}
+.parcial .chips{gap:6px;margin-bottom:0}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.linhactl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mini{display:inline-flex;align-items:center;gap:4px;border:1.2px solid var(--line);border-radius:999px;padding:2px}
+.mini button{width:24px;height:24px;border-radius:50%;border:0;background:rgba(220,224,247,.1);color:var(--lav);cursor:pointer}
+.mini input{width:38px;text-align:center;border:0;background:transparent;color:var(--paper);font-family:var(--fd);font-size:14px}
+.r-label{font-family:var(--fd);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin:0 0 10px}
+.big{font-family:var(--fd);font-size:clamp(40px,5.4vw,70px);line-height:1.04;color:var(--paper);font-weight:700;letter-spacing:-.03em;margin:0 0 18px;font-variant-numeric:tabular-nums}
+.big .x{font-weight:300;color:var(--sun)}
+.lines{border-top:1px solid var(--line);margin-bottom:14px}
+.line{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px;font-variant-numeric:tabular-nums}
+.line span:first-child{color:var(--mist)}
+.line.neg span:last-child{color:var(--sun)}
+.line.tot span{color:var(--paper)!important;font-weight:700;font-family:var(--fd);font-size:15.5px}
+.parcial .line{padding:6px 0}
+.foot{font-size:12px;color:var(--dim);line-height:1.5;margin:0}
+.copy{margin-top:14px;border:0;border-radius:999px;background:var(--sun);color:var(--night);font-weight:700;padding:9px 16px;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+.copy:hover{background:var(--paper)}
+
+/* Peso no caixa */
+.caixa{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(24px,5vw,64px);align-items:end}
+.colunas{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:end;height:340px;border-bottom:1px solid var(--line)}
+.col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.col .nome{font-family:var(--fd);font-weight:700;font-size:17px}
+.col .qtd{font-size:12px;color:var(--mist);margin-bottom:8px}
+.col .bar{width:100%;border-radius:10px 10px 0 0;background:linear-gradient(rgba(138,151,216,.55),var(--indigo));position:relative;transition:height .45s;display:flex;justify-content:center}
+.col .cap{position:absolute;top:0;left:0;right:0;background:var(--sun);border-radius:10px 10px 0 0;min-height:5px;transition:height .45s}
+.col .cap.atual{background:var(--lavm)}
+.col .pct{position:relative;margin-top:14px;font-family:var(--fd);font-weight:700;font-size:15px;color:var(--paper)}
+.rotulos{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:8px;font-size:12px;color:var(--dim);text-align:center}
+.rotulos b{color:var(--lav)}
+.legenda{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--mist);margin-top:12px}
+.legenda span{display:inline-flex;align-items:center;gap:6px}
+.legenda i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.destaques{display:flex;flex-direction:column;gap:20px}
+.dest{border-left:1.5px solid var(--line);padding-left:18px}
+.dest .n{font-family:var(--fd);font-weight:800;font-size:clamp(30px,3.6vw,46px);letter-spacing:-.03em;line-height:1.05;font-variant-numeric:tabular-nums}
+.dest p{margin:4px 0 0;font-size:14px;color:var(--mist);max-width:40ch}
+.faixa{margin-top:28px;border:1.2px solid var(--line);background:rgba(27,33,80,.7);border-radius:14px;padding:12px 16px;font-size:15px;color:var(--lav)}
+.faixa b{color:var(--sun)}
+
+/* Investimento */
+.quatro{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.kpi{background:rgba(27,33,80,.7);border:1.2px solid var(--line);border-radius:18px;padding:20px}
+.kpi.ouro{background:var(--indigo);border-color:var(--indigo)}
+.kpi .n{font-family:var(--fd);font-weight:800;font-size:clamp(22px,2.4vw,32px);letter-spacing:-.02em;line-height:1.08;font-variant-numeric:tabular-nums}
+.kpi.ouro .n{color:var(--sun)}
+.kpi s{display:block;font-size:13px;font-weight:500;color:var(--lav);margin-bottom:4px}
+.kpi s:empty{display:none}
+.kpi p{margin:8px 0 0;font-size:13.5px;color:var(--mist)}
+.kpi.ouro p{color:var(--lav)}
+.listas{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.listas h4{font-family:var(--fd);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--lavm);margin:0 0 10px}
+.listas ul{margin:0;padding-left:18px;font-size:15px;color:var(--lav);display:grid;gap:6px}
+
+/* Próximos passos e encerramento */
+.agenda{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.dia{background:rgba(27,33,80,.7);border:1.2px solid var(--line);border-radius:18px;padding:22px}
+.dia.hoje{background:var(--indigo);border-color:var(--indigo)}
+.dia h3{font-family:var(--fd);font-size:17px;margin:0 0 8px}
+.dia h3 span{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--sun);margin-left:6px}
+.dia p{margin:0;font-size:14.5px;color:var(--lav)}
+
+
+
+/* Encerramento: bonequinhos que viram a logo (igual ao site do Ranan) */
+section.close{position:relative;min-height:100svh;display:grid;place-items:center;text-align:center;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;padding:clamp(70px,10vh,110px) var(--gut)}
+.flock{position:absolute;inset:0;width:100%;height:100%;z-index:0;overflow:visible}
+.close-in{position:relative;z-index:1;display:grid;justify-items:center;gap:clamp(18px,3vh,30px);pointer-events:none}
+.slot{width:var(--S,180px);height:var(--S,180px);display:grid;place-items:center}
+.tap{white-space:nowrap;pointer-events:auto;font-family:var(--fd);font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--night);background:var(--sun);border:0;border-radius:99px;padding:14px 22px;cursor:pointer;animation:pulse 2.2s ease-out infinite;transition:opacity .4s,transform .4s}
+.tap:focus-visible{outline:2px solid var(--paper);outline-offset:4px}
+.close.forming .tap,.close.formed .tap{opacity:0;transform:scale(.8);pointer-events:none}
+.logo-g{opacity:0;transition:opacity .5s}
+.close.forming .logo-g,.close.formed .logo-g{opacity:1}
+.lg-draw{stroke-dasharray:120;stroke-dashoffset:120;transition:stroke-dashoffset 1.3s cubic-bezier(.6,0,.2,1) .15s}
+.close.forming .lg-draw,.close.formed .lg-draw{stroke-dashoffset:0}
+.lg-cap{opacity:0;transform:translateY(-14px);transition:opacity .6s .7s,transform .9s cubic-bezier(.2,.9,.3,1.3) .7s}
+.close.forming .lg-cap,.close.formed .lg-cap{opacity:1;transform:none}
+.lg-tassel{transform-origin:76px 34.5px;transform-box:view-box}
+.close.formed .lg-tassel{animation:swing 3.6s ease-in-out infinite}
+.halo{opacity:0;transition:opacity 1s}
+.close.formed .halo{opacity:1}
+.wave{fill:none;stroke:#F6B92B;stroke-width:.6;opacity:0;transform-origin:50px 63px;transform-box:view-box}
+.close.formed .wave{animation:wave 1.4s cubic-bezier(.2,.7,.2,1) forwards}
+.close.formed .wave.w2{animation-delay:.18s}
+.stage{display:grid}
+.stage > *{grid-area:1/1}
+.before{font-family:var(--fd);font-weight:600;font-size:clamp(20px,2.4vw,34px);line-height:1.25;color:var(--mist);max-width:22ch;margin:0;align-self:center;justify-self:center;transition:opacity .5s,transform .5s}
+.before b{color:var(--paper);font-weight:700}
+.close.forming .before,.close.formed .before{opacity:0;transform:translateY(-10px)}
+.h-l{font-family:var(--fd);font-size:clamp(32px,4.6vw,72px);font-weight:700;line-height:1.05;letter-spacing:-.025em;margin:0}
+.h-l .y{color:var(--sun)}
+.split .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em}
+.split .w > span{display:inline-block;transform:translateY(105%);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.close.formed .split .w > span{transform:none}
+.pieces{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.pieces span{display:inline-flex;align-items:center;gap:8px;font-family:var(--fd);font-weight:600;font-size:clamp(13px,1.1vw,15px);padding:10px 16px;border-radius:99px;border:1px solid rgba(138,151,216,.35);background:rgba(27,33,80,.7);color:var(--lav);opacity:0;transform:translateY(14px);transition:opacity .6s,transform .6s}
+.pieces span svg{width:16px;height:16px}
+.close.formed .pieces span{opacity:1;transform:none}
+.close.formed .pieces span:nth-child(1){transition-delay:.7s}
+.close.formed .pieces span:nth-child(2){transition-delay:.85s}
+.close.formed .pieces span:nth-child(3){transition-delay:1s}
+.after{opacity:0;transform:translateY(12px);transition:opacity .8s .5s,transform .8s .5s;margin:0}
+.close.formed .after{opacity:1;transform:none}
+.date{display:inline-flex;align-items:center;gap:10px;font-family:var(--fd);font-weight:700;font-size:clamp(14px,1.2vw,16px);color:var(--night);background:var(--sun);padding:12px 20px;border-radius:99px}
+.date.after{transition-delay:1.1s}
+.lead.after{color:var(--mist);font-size:15px;transition-delay:1.25s}
+.close:focus-visible{outline:none}
+.close:focus-visible .slot{outline:2px solid var(--sun);outline-offset:8px;border-radius:50%}
+@keyframes wave{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(2.9)}}
+@keyframes swing{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(6deg)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(246,185,43,.45)}70%{box-shadow:0 0 0 22px rgba(246,185,43,0)}100%{box-shadow:0 0 0 0 rgba(246,185,43,0)}}
+
+/* Premissas (uso interno) */
+.btn-prem{position:fixed;left:18px;bottom:18px;z-index:30;border:1.2px solid var(--line);background:rgba(27,33,80,.92);color:var(--lav);border-radius:999px;padding:8px 14px;font-size:12.5px;cursor:pointer;opacity:.55}
+.btn-prem:hover{opacity:1}
+.premissas{position:fixed;left:18px;bottom:62px;z-index:30;width:min(420px,calc(100vw - 36px));max-height:70vh;overflow:auto;background:var(--night2);border:1.2px solid var(--line);border-radius:16px;padding:18px;display:none;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.premissas.aberto{display:block}
+.premissas h3{font-family:var(--fd);font-size:14px;margin:0 0 4px}
+.premissas .sub2{font-size:12px;color:var(--dim);margin:0 0 12px}
+.campo{display:grid;grid-template-columns:1fr 120px;align-items:center;gap:8px;margin-bottom:7px}
+.campo label{font-size:13px;color:var(--lav)}
+.campo input{width:100%;min-width:0;background:var(--night);border:1px solid var(--line);color:var(--paper);border-radius:8px;padding:6px 9px;font-size:14px;font-variant-numeric:tabular-nums;text-align:right}
+.alerta{font-size:12.5px;line-height:1.45;border-left:3px solid var(--sun);padding:6px 10px;background:rgba(246,185,43,.08);border-radius:0 8px 8px 0;margin:0 0 12px}
+.alerta:empty{display:none}
+
+@media (max-width:900px){
+  .fases,.trilha,.simcard,.caixa,.quatro,.listas,.agenda,.duo{grid-template-columns:1fr}
+  .trilha::before{display:none}.passo::before{display:none}
+  nav.dots{display:none}
+  .colunas{height:260px}
+  .simcard{padding:22px}
+}
+</style>
+</head>
+<body>
+<canvas id="ceu" aria-hidden="true"></canvas>
+<div class="brilho" aria-hidden="true"></div>
+<div class="progresso" id="progresso"></div>
+
+<header class="top">
+  <div class="marca">
+    <svg viewBox="0 10 100 80" aria-hidden="true"><circle cx="50" cy="63" r="17" fill="none" stroke="#F6F4EE" stroke-width="3.6"/><ellipse cx="50" cy="63" rx="7" ry="17" fill="none" stroke="#F6F4EE" stroke-width="3"/><path d="M33.5 63 H66.5 M36 71.5 H64" fill="none" stroke="#F6F4EE" stroke-width="3" stroke-linecap="round"/><path d="M50 18 L82 31 L50 44 L18 31 Z" fill="#F6F4EE"/><path d="M33 37 v8.5 q17 7.5 34 0 V37 L50 44 Z" fill="#F6F4EE"/><path d="M50 31 L76 34.5 V40" fill="none" stroke="#F6B92B" stroke-width="2.4" stroke-linecap="round"/><circle cx="76" cy="42.5" r="3.2" fill="#F6B92B"/></svg>
+    MEU ESTÁGIO
+  </div>
+  <div class="data">Estúdio Pi · Sábado, 14 de novembro</div>
+</header>
+
+<nav class="dots" id="dots" aria-label="Seções"></nav>
+
+<main>
+  <!-- 1 · COMBINADO CLARO -->
+  <section class="tela" id="combinado" data-nome="Combinado claro">
+    <div class="miolo">
+      <p class="eyebrow">Combinado claro desde o começo</p>
+      <h2 class="titulo">Primeiro o que organiza. <em>Depois o que automatiza.</em></h2>
+      <div class="fases">
+        <div class="fase f1">
+          <span class="tag">Fase 1 · O que entra no sistema</span>
+          <ul>
+            <li>Telas separadas para agência, empresa e estudante</li>
+            <li>Cadastro de estudante, empresa e instituição de ensino</li>
+            <li>Vagas, banco de talentos e candidaturas</li>
+            <li>Contratos com conferência da lei e aprovação do sócio</li>
+            <li>Folha conferida pelo Ricardo e aprovada pelo Matheus</li>
+            <li>Painel de cobranças: o que entrou, o que vence, o que atrasou</li>
+            <li>Relatórios e extrato anual para conferência</li>
+            <li>Busca e conferência pelo CPF</li>
+          </ul>
+        </div>
+        <div class="fase f2">
+          <span class="tag">Fase 2 · Integrações, uma de cada vez</span>
+          <ul>
+            <li><span><b>1. Assinatura:</b> envio e status automáticos pelo ZapSign</span></li>
+            <li><span><b>2. Boleto ou Pix:</b> emissão e baixa pelo banco ou provedor</span></li>
+            <li><span><b>3. WhatsApp:</b> mensagens e lembretes automáticos</span></li>
+            <li><span><b>4. Seguro:</b> apólice direto com a seguradora, se ela oferecer integração</span></li>
+            <li><span><b>Migração</b> dos dados do fácilCON, se for possível exportá-los</span></li>
+          </ul>
+          <small>A numeração é a ordem que sugerimos; quem decide a ordem são vocês. Cada integração é testada antes no ambiente do terceiro e só então orçada, à parte.</small>
+        </div>
+      </div>
+      <p class="nota">Antes de qualquer entrega: duas semanas de testes internos com a nossa equipe e duas de homologação com vocês, tela por tela.</p>
+    </div>
+  </section>
+
+  <!-- 2 · COMO FUNCIONA -->
+  <section class="tela" id="como" data-nome="Como funciona">
+    <div class="miolo">
+      <p class="eyebrow">Como funciona</p>
+      <h2 class="titulo">Vocês só começam a pagar <em>depois de usar.</em></h2>
+      <div class="trilha">
+        <div class="passo">
+          <h3><span data-v="construcao"></span> dias úteis</h3>
+          <p>Construímos o sistema com os dados e o fluxo de vocês, com duas semanas de testes internos. O site entra no ar nesse período.</p>
+          <span class="chipz">R$ 0</span>
+        </div>
+        <div class="passo">
+          <h3><span data-v="paralelo"></span> dias úteis</h3>
+          <p>O sistema novo roda em paralelo com o atual. Vocês comparam, apontam o que falta e a gente ajusta (duas semanas de homologação).</p>
+          <span class="chipz">R$ 0</span>
+        </div>
+        <div class="passo">
+          <h3>Virada</h3>
+          <p>Vocês cancelam a plataforma atual e passam a usar só a de vocês. <span data-v="primeiroPagamento"></span>.</p>
+          <span class="chipz sol">Começa o pagamento</span>
+        </div>
+      </div>
+      <p class="gigante"><span data-v="diasTotal"></span> dias úteis</p>
+      <p class="sub">até a virada, sem pagar nada pelo sistema. Previsão da virada: <b data-v="viradaMes"></b>.</p>
+    </div>
+  </section>
+
+  <!-- 3 · SIMULE O INVESTIMENTO -->
+  <section class="tela" id="simule" data-nome="Simule o investimento">
+    <div class="miolo">
+      <p class="eyebrow">Simule o investimento</p>
+      <div class="modes" id="modes"></div>
+      <div class="simcard" id="simcard">
+        <div id="left"></div>
+        <div id="right"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · PESO NO CAIXA -->
+  <section class="tela" id="caixa" data-nome="O peso no caixa">
+    <div class="miolo">
+      <p class="eyebrow">O peso no caixa</p>
+      <h2 class="titulo">A agência cresce. <em>O custo do sistema fica do mesmo tamanho.</em></h2>
+      <div class="caixa">
+        <div>
+          <div class="colunas" id="colunas"></div>
+          <div class="rotulos" id="rotulos"></div>
+          <div class="legenda">
+            <span><i style="background:var(--lavm)"></i>plataforma alugada atual, <b data-v="atualTxt"></b></span>
+            <span><i style="background:var(--sun)"></i><span data-v="legendaSistema"></span></span>
+          </div>
+        </div>
+        <div class="destaques">
+          <div class="dest"><div class="n" data-v="d1n"></div><p data-v="d1t"></p></div>
+          <div class="dest"><div class="n" data-v="d2n"></div><p data-v="d2t"></p></div>
+          <div class="dest"><div class="n" data-v="d3n"></div><p data-v="d3t"></p></div>
+        </div>
+      </div>
+      <div class="faixa" data-html="faixa"></div>
+    </div>
+  </section>
+
+  <!-- 5 · O INVESTIMENTO -->
+  <section class="tela" id="investimento" data-nome="O investimento">
+    <div class="miolo">
+      <p class="eyebrow">O investimento</p>
+      <h2 class="titulo"><span data-v="titulo"></span> <em>Nada até a virada.</em></h2>
+      <div class="quatro">
+        <div class="kpi ouro"><div class="n"><s data-v="brutoRiscado"></s><span data-v="total"></span></div><p data-v="k1t"></p></div>
+        <div class="kpi"><div class="n" data-v="k2n"></div><p data-v="k2t"></p></div>
+        <div class="kpi"><div class="n">R$ 0</div><p>durante a construção e o uso em paralelo.</p></div>
+        <div class="kpi"><div class="n"><span data-v="diasTotal"></span> dias úteis</div><p>até a virada: <span data-v="construcao"></span> de construção e <span data-v="paralelo"></span> em paralelo.</p></div>
+      </div>
+      <div class="listas">
+        <div><h4>O que está incluído</h4><ul id="incluido"></ul></div>
+        <div><h4>Combinado à parte</h4><ul id="aparte"></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · PRÓXIMOS PASSOS -->
+  <section class="tela" id="passos" data-nome="Próximos passos">
+    <div class="miolo">
+      <p class="eyebrow">Próximos passos</p>
+      <h2 class="titulo">Segunda a gente ouviu. <em>Hoje a gente alinha.</em></h2>
+      <div class="agenda">
+        <div class="dia"><h3>Segunda 9 <span>feito</span></h3><p>Vocês mostraram o fácilCON: o que usam todo dia, o que trava e o que faz falta.</p></div>
+        <div class="dia"><h3>Terça a sexta <span>feito</span></h3><p>Ajustamos o site e o protótipo do sistema ao que vimos. Os dois estão no ar e vocês acabaram de ver.</p></div>
+        <div class="dia hoje"><h3>Hoje, sábado 14</h3><p>Proposta final para validação. Depois vem o contrato, com revisão jurídica, e a construção começa na segunda seguinte à assinatura.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · ENCERRAMENTO (animação do site do Ranan) -->
+  <section class="close tela" id="fim" data-nome="Encerramento" aria-label="Encerramento" tabindex="0">
+    <svg class="flock" id="flock" aria-hidden="true"></svg>
+    <div class="close-in">
+      <div class="slot" id="slot"><button class="tap" id="tap" type="button">Clique para conectar</button></div>
+      <div class="stage">
+        <p class="before">Hoje, talentos e empresas <b>se encontram por acaso.</b></p>
+        <h2 class="h-l split"><span class="w"><span>Conectando</span></span> <span class="w"><span style="transition-delay:.05s">talentos</span></span> <span class="w"><span style="transition-delay:.1s">a</span></span> <span class="y"><span class="w"><span style="transition-delay:.15s">experiências</span></span> <span class="w"><span style="transition-delay:.2s">únicas.</span></span></span></h2>
+      </div>
+      <div class="pieces">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="#F6B92B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>Site novo</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="#F6B92B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>Sistema próprio</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="#F6B92B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.7 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Automação</span>
+      </div>
+      <p class="date after"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#14183A" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Hoje, 14/11: proposta final</p>
+      <p class="lead after">Meu Estágio × Estúdio Pi</p>
+    </div>
+  </section>
+</main>
+
+<button class="btn-prem" id="btnPrem" type="button" aria-expanded="false" aria-controls="premissas">Premissas</button>
+<div class="premissas" id="premissas" role="dialog" aria-label="Premissas dos slides">
+  <h3>Premissas dos slides</h3>
+  <p class="sub2">Uso interno. Mudam prazos, receita e cenários do peso no caixa.</p>
+  <div class="alerta" id="alerta"></div>
+  <div class="campo"><label for="atual">Plataforma atual (R$/mês)</label><input id="atual" type="number" value="450"></div>
+  <div class="campo"><label for="manut">Manutenção mensal (R$)</label><input id="manut" type="number" value="0"></div>
+  <div class="campo"><label for="inicio">Início da construção</label><input id="inicio" type="date" value="2026-11-23"></div>
+  <div class="campo"><label for="construcao">Construção (dias úteis)</label><input id="construcao" type="number" min="0" value="30"></div>
+  <div class="campo"><label for="paralelo">Paralelo (dias úteis)</label><input id="paralelo" type="number" min="0" value="45"></div>
+  <div class="campo"><label for="ticket">Receita por contrato (R$/mês)</label><input id="ticket" type="number" value="90"></div>
+  <div class="campo"><label for="socios">Sócios</label><input id="socios" type="number" min="1" value="3"></div>
+  <div class="campo"><label for="redes">Redes sociais (R$/mês)</label><input id="redes" type="number" value="1000"></div>
+  <div class="campo"><label for="c1n">Cenário 1 · nome</label><input id="c1n" value="Hoje" style="text-align:left"></div>
+  <div class="campo"><label for="c1">Cenário 1 · contratos</label><input id="c1" type="number" value="70"></div>
+  <div class="campo"><label for="c2n">Cenário 2 · nome</label><input id="c2n" value="Fevereiro" style="text-align:left"></div>
+  <div class="campo"><label for="c2">Cenário 2 · contratos</label><input id="c2" type="number" value="120"></div>
+  <div class="campo"><label for="c3n">Cenário 3 · nome</label><input id="c3n" value="Maio" style="text-align:left"></div>
+  <div class="campo"><label for="c3">Cenário 3 · contratos</label><input id="c3" type="number" value="200"></div>
+</div>
+
+<script>
+/* ===== Simulador: estrutura, regras e valores do modelo aprovado (14/11/2026) ===== */
+const FASE1 = 21900;
+const FASE2 = [
+  {id:'zap', nome:'Assinatura digital (ZapSign)',               h:20, parc:2400, vista:1800},
+  {id:'pag', nome:'Boleto ou Pix',                              h:35, parc:4200, vista:3000},
+  {id:'wpp', nome:'WhatsApp',                                   h:35, parc:4200, vista:3000},
+  {id:'seg', nome:'Levantamento da integração com a seguradora',h:8,  parc:960,  vista:600},
+  {id:'mig', nome:'Migração dos dados do fácilCON',             h:24, parc:2880, vista:2500},
+];
+const F2_PARC = FASE2.reduce((s,i)=>s+i.parc,0);   // 14.640
+const F2_VISTA = FASE2.reduce((s,i)=>s+i.vista,0); // 10.900
+const MAX_LIVRE = 60, MAX_F2 = 12;
+const MODES = [
+  {id:'f1',      tag:'Opção 1', nome:'Fase 1 · implantação'},
+  {id:'total',   tag:'Opção 2', nome:'Fase 1 + Fase 2 completa'},
+  {id:'parcial', tag:'Opção 3', nome:'Fase 1 + Fase 2 parcial'},
+];
+let mode = 'f1';
+const st = {
+  f1:{n:36, d:0},
+  total:{n:36, d:0},
+  parcial:{n1:36, n2:12, d:0, sel:new Set(FASE2.map(i=>i.id))},
+};
+const brl = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const brl0 = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:v%1?2:0,maximumFractionDigits:2});
+const clamp = (v,a,b) => Math.min(b, Math.max(a, v));
+const limits = {n:[1,MAX_LIVRE], n1:[1,MAX_LIVRE], n2:[1,MAX_F2], d:[0,100]};
+const PARC_LIVRE = [{v:1,t:'À vista'},{v:6,t:'6×'},{v:10,t:'10×'},{v:12,t:'12×'},{v:18,t:'18×'},{v:24,t:'24×'}];
+const PARC_F2 = [{v:1,t:'À vista'},{v:3,t:'3×'},{v:6,t:'6×'},{v:10,t:'10×'},{v:12,t:'12×'}];
+const DESC = [{v:0,t:'Sem desconto'},{v:5,t:'5%'},{v:10,t:'10%'},{v:15,t:'15%'},{v:20,t:'20%'}];
+const DESC_CURTO = [{v:0,t:'0%'},{v:5,t:'5%'},{v:10,t:'10%'},{v:15,t:'15%'},{v:20,t:'20%'}];
+
+function chips(key, opts){
+  const s = st[mode];
+  return `<div class="chips">${opts.map(o=>`<button type="button" class="chip ${s[key]===o.v?'on':''}" data-set="${key}" data-v="${o.v}">${o.t}</button>`).join('')}</div>`;
+}
+function stepper(key, label){
+  const v = st[mode][key];
+  return `<div class="step"><label for="st-${key}">${label}</label><div class="row">
+    <button type="button" data-step="${key}" data-dir="-1" aria-label="menos">–</button>
+    <input id="st-${key}" data-k="${key}" type="number" value="${v}" min="${limits[key][0]}" max="${limits[key][1]}">
+    <button type="button" data-step="${key}" data-dir="1" aria-label="mais">+</button></div></div>`;
+}
+function mini(key, label){
+  const v = st[mode][key];
+  return `<span class="mini"><button type="button" data-step="${key}" data-dir="-1" aria-label="menos">–</button><input id="st-${key}" data-k="${key}" type="number" value="${v}" min="${limits[key][0]}" max="${limits[key][1]}" aria-label="${label}"><button type="button" data-step="${key}" data-dir="1" aria-label="mais">+</button></span>`;
+}
+function renderModes(){
+  document.getElementById('modes').innerHTML = MODES.map(m=>
+    `<button type="button" class="mode ${m.id===mode?'on':''}" data-mode="${m.id}"><small>${m.tag}</small>${m.nome}</button>`).join('');
+  document.getElementById('simcard').classList.toggle('parcial', mode==='parcial');
+}
+function renderLeft(){
+  const s = st[mode]; let h = '';
+  if(mode==='f1' || mode==='total'){
+    h += `<div class="sec"><p class="sec-t">Parcelamento</p>${chips('n',PARC_LIVRE)}</div>`;
+    h += `<div class="sec"><p class="sec-t">Desconto</p>${chips('d',DESC)}</div>`;
+    h += `<div class="steps">${stepper('n','Parcelas (1 = à vista)')}${stepper('d','Desconto (%)')}</div>`;
+    if(mode==='total') h += `<div class="notinha">Na Fase 2 completa, o pagamento <b>à vista</b> usa a tabela à vista (${brl(F2_VISTA)}). Parcelado usa ${brl(F2_PARC)} e pode ser dividido junto com a Fase 1 em quantas vezes quiser.</div>`;
+  } else {
+    // Opção 3 em versão compacta: etapas em linha única, parcelamentos lado a lado, campos +/– junto dos botões
+    const avista = s.n2===1;
+    h += `<div class="sec"><p class="sec-t">Etapas da Fase 2</p><div class="items">` +
+      FASE2.map((i,k)=>{
+        const on = s.sel.has(i.id);
+        return `<label class="item ${on?'':'off'}"><input type="checkbox" data-item="${i.id}" ${on?'checked':''}>
+          <span class="nm">${k+1}. ${i.id==='seg'?'Levantamento da seguradora':i.nome}<span class="hr">${i.h} h</span></span>
+          <span class="pr">${brl0(avista?i.vista:i.parc)}<small>${avista?'à vista':`${s.n2}× ${brl(i.parc/s.n2)}`}</small></span></label>`;
+      }).join('') + `</div>
+      <div class="notinha"><b>Seguradora:</b> orçamento à parte. Depende de qual é e se oferece integração; o levantamento (item 4) vem primeiro.</div></div>`;
+    h += `<div class="duo">
+      <div class="sec"><p class="sec-t">Fase 1 · livre</p><div class="linhactl">${chips('n1',PARC_LIVRE)}${mini('n1','Parcelas Fase 1')}</div></div>
+      <div class="sec"><p class="sec-t">Fase 2 · até 12×</p><div class="linhactl">${chips('n2',PARC_F2)}${mini('n2','Parcelas Fase 2')}</div></div>
+    </div>`;
+    h += `<div class="sec"><p class="sec-t">Desconto</p><div class="linhactl">${chips('d',DESC_CURTO)}${mini('d','Desconto em %')}<span style="font-size:12px;color:var(--dim)">%</span></div></div>`;
+  }
+  document.getElementById('left').innerHTML = h;
+}
+function calc(){
+  const s = st[mode], f = 1 - s.d/100;
+  if(mode==='f1'){
+    const total = FASE1*f;
+    return {n:s.n, parcela:total/s.n, total, bruto:FASE1, d:s.d, f2itens:[],
+      lines:[['Fase 1 · implantação', brl(FASE1)]],
+      comps:[{nome:'Fase 1', n:s.n, p:total/s.n}]};
+  }
+  if(mode==='total'){
+    const f2 = s.n===1 ? F2_VISTA : F2_PARC;
+    const bruto = FASE1+f2, total = bruto*f;
+    return {n:s.n, parcela:total/s.n, total, bruto, d:s.d, f2itens:FASE2,
+      lines:[['Fase 1 · implantação', brl(FASE1)], [`Fase 2 completa (${s.n===1?'à vista':'parcelado'})`, brl(f2)]],
+      comps:[{nome:'Fase 1 + Fase 2', n:s.n, p:total/s.n}]};
+  }
+  const itens = FASE2.filter(i=>s.sel.has(i.id));
+  const f2 = itens.reduce((a,i)=>a+(s.n2===1?i.vista:i.parc),0);
+  const t1 = FASE1*f, t2 = f2*f, p1 = t1/s.n1, p2 = t2/s.n2;
+  const sched = [];
+  if(t2>0){
+    const m = Math.min(s.n1,s.n2), M = Math.max(s.n1,s.n2);
+    sched.push([m===1?'1º mês':`1º ao ${m}º mês`, brl(p1+p2)]);
+    if(M>m) sched.push([m+1===M?`${M}º mês`:`${m+1}º ao ${M}º mês`, brl(s.n1>s.n2?p1:p2)]);
+  } else sched.push([s.n1===1?'1º mês':`1º ao ${s.n1}º mês`, brl(p1)]);
+  const comps=[{nome:'Fase 1', n:s.n1, p:p1}]; if(t2>0) comps.push({nome:'Fase 2', n:s.n2, p:p2});
+  return {parcial:true, n1:s.n1, n2:s.n2, p1, p2, t1, t2, total:t1+t2, bruto:FASE1+f2, itens, f2itens:itens, d:s.d, sched, comps,
+    lines:[['Fase 1 · implantação', brl(FASE1)],
+           [`Fase 2 · ${itens.length} de ${FASE2.length} etapas (${s.n2===1?'à vista':'parcelado'})`, brl(f2)]]};
+}
+function renderRight(){
+  const c = calc(); let h = '';
+  if(!c.parcial){
+    h += `<p class="r-label">${c.n===1?'Pagamento à vista':'Parcela mensal'}</p>`;
+    h += `<p class="big">${c.n===1?'':`${c.n} <span class="x">×</span> `}${brl(c.parcela)}</p>`;
+  } else {
+    const both = c.t2>0;
+    h += `<p class="r-label">${both?'Parcela do 1º mês (Fase 1 + Fase 2)':'Parcela mensal'}</p>`;
+    h += `<p class="big">${brl(both?c.p1+c.p2:c.p1)}</p>`;
+    h += `<div class="lines">
+      <div class="line"><span>Fase 1</span><span>${c.n1===1?'à vista':c.n1+'×'} ${brl(c.p1)}</span></div>
+      ${both?`<div class="line"><span>Fase 2</span><span>${c.n2===1?'à vista':c.n2+'×'} ${brl(c.p2)}</span></div>`:''}
+      ${c.sched.map(l=>`<div class="line"><span>${l[0]}</span><span>${l[1]}/mês</span></div>`).join('')}
+    </div>`;
+  }
+  h += `<div class="lines">` + c.lines.map(l=>`<div class="line"><span>${l[0]}</span><span>${l[1]}</span></div>`).join('');
+  if(c.d>0) h += `<div class="line neg"><span>Desconto ${String(c.d).replace('.',',')}%</span><span>− ${brl(c.bruto-c.total)}</span></div>`;
+  h += `<div class="line tot"><span>Total</span><span>${brl(c.total)}</span></div></div>`;
+  h += `<p class="foot">Valores de implantação. A manutenção mensal é cobrada à parte. ${mode==='parcial'?'Cada etapa da Fase 2 pode ser parcelada em até 12×; a Fase 2 é sempre somada à Fase 1.':''}</p>`;
+  h += `<button type="button" class="copy" id="copy">Copiar resumo</button>`;
+  document.getElementById('right').innerHTML = h;
+  document.getElementById('copy').onclick = () => copiar(c);
+  return c;
+}
+function copiar(c){
+  const m = MODES.find(x=>x.id===mode).nome;
+  let t = `${m}\n` + c.lines.map(l=>`${l[0]}: ${l[1]}`).join('\n');
+  if(c.d>0) t += `\nDesconto ${c.d}%: − ${brl(c.bruto-c.total)}`;
+  t += `\nTotal: ${brl(c.total)}\n`;
+  if(!c.parcial) t += c.n===1?`Pagamento à vista: ${brl(c.parcela)}`:`${c.n}× de ${brl(c.parcela)}`;
+  else {
+    t += `Fase 1: ${c.n1===1?'à vista':c.n1+'×'} ${brl(c.p1)}`;
+    if(c.t2>0) t += `\nFase 2: ${c.n2===1?'à vista':c.n2+'×'} ${brl(c.p2)}\nEtapas: ${c.itens.map(i=>i.nome).join(', ')}`;
+    t += '\n' + c.sched.map(l=>`${l[0]}: ${l[1]}/mês`).join('\n');
+  }
+  const b = document.getElementById('copy');
+  try{ navigator.clipboard.writeText(t).then(()=>{b.textContent='Copiado';setTimeout(()=>b.textContent='Copiar resumo',1500)},()=>{b.textContent='Não foi possível copiar'}); }
+  catch(e){ b.textContent='Não foi possível copiar'; }
+}
+function setVal(key, v){
+  v = Number(v); if(isNaN(v)) return;
+  st[mode][key] = clamp(key==='d'?Math.round(v*10)/10:Math.round(v), ...limits[key]);
+  render();
+}
+
+/* ===== Ligação simulador → Como funciona, Peso no caixa e Investimento ===== */
+const pIds=["atual","manut","inicio","construcao","paralelo","ticket","socios","redes","c1n","c1","c2n","c2","c3n","c3"];
+const P=Object.fromEntries(pIds.map(i=>[i,document.getElementById(i)]));
+const num=i=>Math.max(0,parseFloat(P[i].value)||0);
+const pct=v=>(v*100).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
+const mil=v=>v%1000===0?"R$ "+(v/1000).toLocaleString("pt-BR")+" mil":(v%100===0?"R$ "+(v/1000).toLocaleString("pt-BR",{maximumFractionDigits:1})+" mil":brl0(Math.round(v)));
+const feriados=new Set(["2026-11-20","2026-12-25","2027-01-01","2027-02-08","2027-02-09","2027-03-26","2027-04-21","2027-05-01","2027-06-03","2027-09-07","2027-10-12","2027-11-02","2027-11-15","2027-11-20","2027-12-25"]);
+const iso=d=>d.toISOString().slice(0,10);
+function somaUteis(inicioStr,dias){
+  if(!inicioStr) return null;
+  const d=new Date(inicioStr+"T12:00:00Z"); if(isNaN(d)) return null; let c=0;
+  for(let g=0;g<2000;g++){const w=d.getUTCDay(); if(w!==0&&w!==6&&!feriados.has(iso(d))){c++; if(c>=dias) return d;} d.setUTCDate(d.getUTCDate()+1);}
+  return null;
+}
+const meses=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+const vezes=n=>n===1?"à vista":n+"×";
+
+function atualizarSlides(c){
+  const atual=num("atual"), manut=num("manut"), ticket=num("ticket"), socios=Math.max(1,Math.round(num("socios"))), redes=num("redes");
+  const construcao=Math.round(num("construcao")), paralelo=Math.round(num("paralelo")), diasTotal=construcao+paralelo;
+  const virada=somaUteis(P.inicio.value,Math.max(1,diasTotal));
+
+  const recorrentes=c.comps.filter(x=>x.n>1), avista=c.comps.filter(x=>x.n===1);
+  const mensalSistema=recorrentes.reduce((a,x)=>a+x.p,0);
+  const avistaValor=avista.reduce((a,x)=>a+x.p,0);
+  const custoMes=mensalSistema+manut;
+  const temF2=c.f2itens.length>0;
+
+  const cen=[1,2,3].map(k=>({nome:P["c"+k+"n"].value||("Cenário "+k),contratos:num("c"+k)}));
+  cen.forEach((x,i)=>{x.receita=x.contratos*ticket; x.atual=i===0; x.custo=i===0?atual:custoMes; x.pct=x.receita?x.custo/x.receita:0;});
+  const ult=cen[2];
+
+  let primeiro;
+  if(recorrentes.length && avista.length) primeiro=`Aqui entram ${brl(avistaValor)} à vista e a 1ª parcela mensal, de ${brl(mensalSistema)}`;
+  else if(recorrentes.length) primeiro=`A primeira parcela, de ${brl(mensalSistema)}, vem aqui`;
+  else primeiro=`O pagamento à vista, de ${brl(avistaValor)}, é feito aqui`;
+
+  let titulo;
+  if(c.comps.length===1) titulo = c.comps[0].n===1 ? `${mil(c.total)} à vista.` : `${mil(c.total)} em ${c.comps[0].n} parcelas.`;
+  else titulo = `${mil(c.total)}: Fase 1 ${vezes(c.n1)} e Fase 2 ${vezes(c.n2)}.`;
+
+  const k1t = mode==='f1' ? "sistema da fase 1, plataforma própria." :
+              mode==='total' ? "fase 1 e fase 2 completa." : `fase 1 e ${c.itens.length} de ${FASE2.length} etapas da fase 2.`;
+  let k2n,k2t;
+  if(c.comps.length===1){
+    if(c.comps[0].n===1){k2n="À vista"; k2t="pagamento único na virada.";}
+    else {k2n=`${c.comps[0].n} × ${brl0(Math.round(c.comps[0].p*100)/100)}`; k2t="parcelas mensais, sem juros.";}
+  } else {
+    k2n=brl0(Math.round((c.p1+(c.t2>0?c.p2:0))*100)/100)+"/mês";
+    k2t=c.sched.map(l=>`${l[0]}: ${l[1]}`).join(" · ")+".";
+  }
+
+  let d1n,d1t,d2n,d2t,d3n,d3t;
+  if(custoMes>0){
+    const eq=ticket?Math.ceil(custoMes/ticket):0;
+    d1n=(eq||"–")+" contratos";
+    d1t=(manut>0?"pagam o sistema inteiro no mês (parcela e manutenção).":"pagam a parcela inteira do sistema.")+` Em ${ult.nome} vocês teriam ${Math.max(0,ult.contratos-cen[0].contratos).toLocaleString("pt-BR")} contratos a mais do que hoje.`;
+    d2n=brl0(Math.round(custoMes/socios));
+    d2t=`por sócio, por mês, numa renda de ${brl0(Math.round(ult.receita/socios))} por sócio no cenário de ${ult.nome.toLowerCase()}.`;
+    const dif=custoMes-atual;
+    d3n=brl0(Math.round(Math.abs(dif)));
+    d3t=dif>=0?"a mais do que vocês já pagam hoje pela plataforma alugada, numa plataforma exclusiva da Meu Estágio.":"a menos do que vocês pagam hoje pela plataforma alugada, numa plataforma exclusiva da Meu Estágio.";
+  } else {
+    d1n="R$ 0/mês"; d1t="de parcela depois da virada: o sistema foi pago à vista.";
+    d2n=brl0(Math.round(avistaValor/socios)); d2t="por sócio, uma única vez, na virada.";
+    d3n=brl0(atual); d3t="por mês que deixam de pagar pela plataforma alugada.";
+  }
+  const faixa = custoMes>0
+    ? `Somando as redes sociais já contratadas (${brl0(redes)} por mês), o investimento total com o Estúdio Pi em ${ult.nome.toLowerCase()} fica em <b>${ult.receita?pct((custoMes+redes)/ult.receita):"–"}</b> da receita.`
+    : `Com o sistema pago à vista, o custo mensal em ${ult.nome.toLowerCase()} fica só nas redes sociais (${brl0(redes)} por mês): <b>${ult.receita?pct(redes/ult.receita):"–"}</b> da receita.`;
+
+  const v={construcao,paralelo,diasTotal,
+    viradaMes: virada?meses[virada.getUTCMonth()]+" de "+virada.getUTCFullYear():"defina o início",
+    primeiroPagamento: primeiro, titulo, total: brl0(Math.round(c.total*100)/100),
+    brutoRiscado: c.d>0?brl0(c.bruto):"", k1t, k2n, k2t, d1n,d1t,d2n,d2t,d3n,d3t,
+    atualTxt: brl0(atual),
+    legendaSistema: custoMes>0?`sistema próprio, ${manut>0?"parcela e manutenção":"parcela"} de ${brl0(Math.round(custoMes*100)/100)}`:"sistema próprio, pago à vista"};
+  document.querySelectorAll("[data-v]").forEach(e=>{const k=e.dataset.v; if(k in v) e.textContent=v[k];});
+  document.querySelector('[data-html="faixa"]').innerHTML=faixa;
+
+  // Colunas: altura = receita; tampa = custo mensal (mesma escala)
+  const max=Math.max(...cen.map(x=>x.receita),1);
+  document.getElementById("colunas").innerHTML=cen.map(x=>{
+    const hb=Math.max(x.receita/max*78,2), hc=x.receita?Math.min(x.custo/x.receita*100,100):0;
+    return `<div class="col"><div class="nome">${x.nome}</div><div class="qtd">${x.contratos.toLocaleString("pt-BR")} contratos</div>
+      <div class="bar" style="height:${hb}%"><div class="cap ${x.atual?"atual":""}" style="height:${hc}%"></div><span class="pct">${pct(x.pct)}</span></div></div>`;
+  }).join("");
+  document.getElementById("rotulos").innerHTML=cen.map(x=>`<div>receita <b>${brl0(x.receita)}</b></div>`).join("");
+
+  const inc=["Plataforma exclusiva, com a identidade da Meu Estágio.","Hospedagem e suporte pelo Estúdio Pi.","Banco de dados separado, no Brasil, com dados exportáveis e LGPD."];
+  if(mode==='total') inc.push("Fase 2 completa: assinatura digital, boleto ou Pix, WhatsApp, levantamento da seguradora e migração do fácilCON.");
+  if(mode==='parcial' && c.itens.length) inc.push("Fase 2: "+c.itens.map(i=>i.nome.replace(" (ZapSign)","").replace("Levantamento da integração com a seguradora","levantamento da seguradora").replace("Migração dos dados do fácilCON","migração do fácilCON")).join(", ")+".");
+  const ap=[];
+  ap.push(manut>0?`Manutenção mensal de ${brl0(manut)}.`:"Manutenção mensal cobrada à parte.");
+  if(!temF2) ap.push("Integrações da fase 2, orçadas por item.");
+  else if(mode==='parcial' && c.itens.length<FASE2.length) ap.push("Etapas da fase 2 não escolhidas agora, orçadas quando forem pedidas.");
+  ap.push("Integração com a seguradora: orçamento à parte, depois do levantamento.");
+  ap.push("Contas de terceiros no nome e por conta da Meu Estágio.");
+  document.getElementById("incluido").innerHTML=inc.map(t=>`<li>${t}</li>`).join("");
+  document.getElementById("aparte").innerHTML=ap.map(t=>`<li>${t}</li>`).join("");
+
+  const avisos=[];
+  if(virada){
+    cen.slice(1).forEach(x=>{const m=meses.indexOf(x.nome.trim().toLowerCase()); if(m>=0){const ano=m>=10?2026:2027; if(new Date(Date.UTC(ano,m,28))<virada) avisos.push(`Em ${x.nome} a virada ainda não aconteceu (prevista para ${meses[virada.getUTCMonth()]}), então nesse mês eles ainda não pagam nada.`);}});
+  }
+  document.getElementById("alerta").textContent=avisos.join(" ");
+}
+function render(){ renderModes(); renderLeft(); const c=renderRight(); atualizarSlides(c); }
+
+document.addEventListener('click', e=>{
+  const t = e.target.closest('[data-mode],[data-set],[data-step]');
+  if(!t) return;
+  if(t.dataset.mode){ mode = t.dataset.mode; render(); }
+  else if(t.dataset.set) setVal(t.dataset.set, t.dataset.v);
+  else if(t.dataset.step){ const k=t.dataset.step; setVal(k, st[mode][k] + Number(t.dataset.dir)); }
+});
+document.addEventListener('change', e=>{
+  const t = e.target;
+  if(t.dataset.k) setVal(t.dataset.k, t.value);
+  if(t.dataset.item){ const s=st.parcial.sel; t.checked?s.add(t.dataset.item):s.delete(t.dataset.item); render(); }
+});
+pIds.forEach(i=>P[i].addEventListener("input",()=>atualizarSlides(calc())));
+const bp=document.getElementById("btnPrem"), pp=document.getElementById("premissas");
+bp.addEventListener("click",()=>{const a=pp.classList.toggle("aberto"); bp.setAttribute("aria-expanded",a);});
+render();
+
+/* ===== Navegação por pontos e barra de progresso ===== */
+const secs=[...document.querySelectorAll("section.tela")];
+const dots=document.getElementById("dots");
+dots.innerHTML=secs.map(s=>`<a href="#${s.id}" aria-label="${s.dataset.nome}" title="${s.dataset.nome}"></a>`).join("");
+const links=[...dots.children];
+function onScroll(){
+  const y=window.scrollY, h=document.documentElement.scrollHeight-innerHeight;
+  document.getElementById("progresso").style.width=(h>0?y/h*100:0)+"%";
+  let i=0; secs.forEach((s,k)=>{if(s.offsetTop-innerHeight*.4<=y) i=k;});
+  links.forEach((a,k)=>a.classList.toggle("on",k===i));
+}
+addEventListener("scroll",onScroll,{passive:true}); onScroll();
+
+/* ===== Céu com constelações (desenho estático) ===== */
+const cv=document.getElementById("ceu"), cx=cv.getContext("2d");
+function ceu(){
+  const w=cv.width=innerWidth*devicePixelRatio, h=cv.height=innerHeight*devicePixelRatio;
+  cv.style.width=innerWidth+"px"; cv.style.height=innerHeight+"px";
+  let seed=7; const r=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  const pts=[]; const n=Math.round(innerWidth*innerHeight/9000);
+  for(let i=0;i<n;i++) pts.push([r()*w,r()*h,r()]);
+  cx.clearRect(0,0,w,h);
+  cx.strokeStyle="rgba(138,151,216,.12)"; cx.lineWidth=devicePixelRatio;
+  const lim=130*devicePixelRatio;
+  for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
+    const dx=pts[i][0]-pts[j][0], dy=pts[i][1]-pts[j][1];
+    if(dx*dx+dy*dy<lim*lim && pts[i][2]>.55){cx.beginPath();cx.moveTo(pts[i][0],pts[i][1]);cx.lineTo(pts[j][0],pts[j][1]);cx.stroke();}
+  }
+  pts.forEach(p=>{cx.fillStyle=p[2]>.93?"rgba(246,185,43,.85)":"rgba(220,224,247,.55)";cx.beginPath();cx.arc(p[0],p[1],(p[2]>.93?1.8:1.1)*devicePixelRatio,0,7);cx.fill();});
+}
+ceu(); addEventListener("resize",ceu);
+
+/* ===== Encerramento: bonequinhos que viram a logo (lógica do site do Ranan) ===== */
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  var sec=document.getElementById('fim'),svg=document.getElementById('flock'),slot=document.getElementById('slot'),tap=document.getElementById('tap');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var PAPER='#F6F4EE',SUN='#F6B92B',LAV='#AEB8EE';
+  var palette=[PAPER,SUN,LAV];
+  var TARGETS=[[-150,LAV],[-110,SUN],[-70,PAPER],[70,LAV],[110,SUN],[150,PAPER]];
+  var N=innerWidth<700?18:30;
+  if(matchMedia('(pointer: coarse)').matches){tap.textContent='Toque para conectar'}
+  function el(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+  var linesG=el('g',{},svg);
+  var logo=el('g',{'class':'logo-g'},svg);
+  el('circle',{'class':'wave',cx:50,cy:63,r:17},logo);el('circle',{'class':'wave w2',cx:50,cy:63,r:17},logo);
+  el('circle',{'class':'halo',cx:50,cy:63,r:40,fill:'none',stroke:'#AEB6EA','stroke-width':.25,'stroke-dasharray':'.8 2.2',opacity:.5},logo);
+  el('circle',{'class':'lg-draw',cx:50,cy:63,r:17,fill:'none',stroke:PAPER,'stroke-width':3.6},logo);
+  el('ellipse',{'class':'lg-draw',cx:50,cy:63,rx:7,ry:17,fill:'none',stroke:PAPER,'stroke-width':3},logo);
+  el('path',{'class':'lg-draw',d:'M33.5 63 H66.5 M36 71.5 H64',fill:'none',stroke:PAPER,'stroke-width':3,'stroke-linecap':'round'},logo);
+  var cap=el('g',{'class':'lg-cap'},logo);
+  el('path',{d:'M50 18 L82 31 L50 44 L18 31 Z',fill:PAPER},cap);
+  el('path',{d:'M33 37 v8.5 q17 7.5 34 0 V37 L50 44 Z',fill:PAPER},cap);
+  var tas=el('g',{'class':'lg-tassel'},cap);
+  el('path',{d:'M50 31 L76 34.5 V40',fill:'none',stroke:SUN,'stroke-width':2.4,'stroke-linecap':'round','stroke-linejoin':'round'},tas);
+  el('circle',{cx:76,cy:42.5,r:3.2,fill:SUN},tas);
+  var people=[];
+  for(var i=0;i<N;i++){
+    var c=palette[i%3];var g=el('g',{},svg);
+    el('circle',{cx:0,cy:-3.4,r:3,fill:c},g);
+    el('path',{d:'M-5 4.4 Q0 -2.6 5 4.4 Z',fill:c},g);
+    people.push({g:g,c:c,x:0,y:0,vx:0,vy:0,rot:0,base:(Math.random()-.5)*40,ph:Math.random()*6.28,sp:.6+Math.random()*.8,sz:.75+Math.random()*.55,s:0,op:0,slot:null,delay:0});
+  }
+  var used={};
+  TARGETS.forEach(function(tg,ti){for(var j=0;j<people.length;j++){if(!used[j]&&people[j].c===tg[1]){used[j]=1;people[j].slot=ti;break}}});
+  var W,H,S,k,ox,oy,state='float',t0=0;
+  function layout(first){
+    W=sec.clientWidth;H=sec.clientHeight;
+    S=Math.max(150,Math.min(240,Math.min(W,H)*.28));
+    sec.style.setProperty('--S',S+'px');
+    svg.setAttribute('viewBox','0 0 '+W+' '+H);
+    var sr=sec.getBoundingClientRect(),r=slot.getBoundingClientRect();
+    ox=r.left-sr.left;oy=r.top-sr.top;k=S/100;
+    logo.setAttribute('transform','translate('+ox+' '+oy+') scale('+k+')');
+    people.forEach(function(p){
+      if(first){p.x=Math.random()*W;p.y=Math.random()*H;p.vx=(Math.random()-.5)*.8;p.vy=(Math.random()-.5)*.8;p.s=1.35*k*.8*p.sz;p.op=.9}
+      if(p.slot!==null){var a=TARGETS[p.slot][0]*Math.PI/180;p.tx=ox+k*(50+29*Math.sin(a));p.ty=oy+k*(63-29*Math.cos(a));p.trot=TARGETS[p.slot][0];p.ts=1.35*k;p.top=1}
+      else{p.tx=ox+50*k;p.ty=oy+63*k;p.trot=0;p.ts=0;p.top=0}
+      if(state==='formed'){p.x=p.tx;p.y=p.ty;p.rot=p.trot;p.s=p.ts;p.op=p.top}
+    });
+  }
+  function form(){
+    state='forming';sec.classList.add('forming');t0=performance.now();
+    var order=people.slice().sort(function(a,b){return (a.slot!==null)-(b.slot!==null)});
+    order.forEach(function(p,i){p.delay=i*(p.slot!==null?40:22)});
+    if(reduce)people.forEach(function(p){p.x=p.tx;p.y=p.ty;p.rot=p.trot;p.s=p.ts;p.op=p.top});
+  }
+  function scatter(){
+    state='float';sec.classList.remove('forming','formed');
+    people.forEach(function(p){var a=Math.random()*6.28,v=2+Math.random()*3;
+      if(p.slot===null){p.x=ox+50*k;p.y=oy+63*k}
+      p.vx=Math.cos(a)*v;p.vy=Math.sin(a)*v;p.op=.9});
+  }
+  function toggle(){if(state==='float')form();else if(state==='formed')scatter()}
+  sec.addEventListener('click',toggle);
+  sec.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle()}});
+  tap.addEventListener('click',function(e){e.stopPropagation();toggle()});
+  var lineEls=[];for(var a=0;a<N;a++)for(var b=a+1;b<N;b++){lineEls.push([a,b,el('line',{stroke:'#8A97D8','stroke-width':1},linesG),1])}
+  var lineAlpha=1;
+  function norm(d){while(d>180)d-=360;while(d<-180)d+=360;return d}
+  function tick(now){
+    var t=now/1000;
+    if(state==='float'){
+      people.forEach(function(p){
+        p.vx+=(Math.random()-.5)*.05;p.vy+=(Math.random()-.5)*.05;
+        var sp=Math.hypot(p.vx,p.vy),mx=.7;if(sp>mx){p.vx*=.96;p.vy*=.96}
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x<10){p.x=10;p.vx=Math.abs(p.vx)}if(p.x>W-10){p.x=W-10;p.vx=-Math.abs(p.vx)}
+        if(p.y<10){p.y=10;p.vy=Math.abs(p.vy)}if(p.y>H-10){p.y=H-10;p.vy=-Math.abs(p.vy)}
+        p.rot+=norm(p.base+Math.sin(t*p.sp+p.ph)*18-p.rot)*.08;
+        var bs=1.35*k*.8*p.sz;p.s+=(bs-p.s)*.06;p.op+=(.9-p.op)*.06;
+      });
+    } else if(state==='forming'){
+      var el2=now-t0,done=true;
+      people.forEach(function(p){
+        if(el2<p.delay){done=false;return}
+        var f=p.slot!==null?.075:.09;
+        p.x+=(p.tx-p.x)*f;p.y+=(p.ty-p.y)*f;p.rot+=norm(p.trot-p.rot)*f;p.s+=(p.ts-p.s)*f;
+        if(p.slot===null){var d=Math.hypot(p.tx-p.x,p.ty-p.y);p.op=Math.min(p.op,Math.min(1,d/(40*k)))}
+        if(Math.hypot(p.tx-p.x,p.ty-p.y)>.4||Math.abs(p.ts-p.s)>.01)done=false;
+      });
+      if(done||el2>4200){state='formed';sec.classList.add('formed');people.forEach(function(p){p.x=p.tx;p.y=p.ty;p.rot=p.trot;p.s=p.ts;p.op=p.top})}
+    }
+    lineAlpha+=((state==='float'?1:0)-lineAlpha)*.08;
+    var maxD=Math.min(190,Math.max(120,W*.12));
+    for(var q=0;q<lineEls.length;q++){var L=lineEls[q],A=people[L[0]],B=people[L[1]],d=Math.hypot(A.x-B.x,A.y-B.y),o=d<maxD?(1-d/maxD)*.35*lineAlpha*Math.min(A.op,B.op):0;
+      if(o<.01){if(L[3]){L[2].setAttribute('opacity',0);L[3]=0}continue}
+      L[2].setAttribute('x1',A.x.toFixed(1));L[2].setAttribute('y1',A.y.toFixed(1));L[2].setAttribute('x2',B.x.toFixed(1));L[2].setAttribute('y2',B.y.toFixed(1));L[2].setAttribute('opacity',o.toFixed(2));L[3]=1}
+    people.forEach(function(p){
+      p.g.setAttribute('transform','translate('+p.x.toFixed(2)+' '+p.y.toFixed(2)+') rotate('+p.rot.toFixed(2)+') scale('+Math.max(p.s,0).toFixed(3)+')');
+      p.g.setAttribute('opacity',Math.max(0,Math.min(1,p.op)).toFixed(2));
+    });
+    requestAnimationFrame(tick);
+  }
+  layout(true);requestAnimationFrame(tick);
+  var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){layout(false)},120)});
+})();
+</script>
+</body>
+</html>
