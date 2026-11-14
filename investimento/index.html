@@ -107,7 +107,10 @@ h2.titulo em{font-style:normal;color:var(--sun)}
 .notinha{font-size:12px;line-height:1.5;color:var(--mist);border-left:3px solid var(--sun);padding:6px 10px;margin-top:10px;background:rgba(246,185,43,.06);border-radius:0 8px 8px 0}
 .notinha b{color:var(--paper);font-weight:600}
 /* Opção 3 compacta */
-.parcial .sec{margin-bottom:14px}
+.parcial .sec{margin-bottom:10px}
+.parcial .item{padding:4px 0}
+.parcial .notinha{margin-top:6px;padding:4px 10px}
+.parcial .sec-t{margin-bottom:7px}
 .parcial .chip{padding:5px 11px;font-size:13px}
 .parcial .chips{gap:6px;margin-bottom:0}
 .duo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -123,7 +126,10 @@ h2.titulo em{font-style:normal;color:var(--sun)}
 .line span:first-child{color:var(--mist)}
 .line.neg span:last-child{color:var(--sun)}
 .line.tot span{color:var(--paper)!important;font-weight:700;font-family:var(--fd);font-size:15.5px}
-.parcial .line{padding:6px 0}
+.parcial .line{padding:5px 0;font-size:13.5px}
+.parcial .big{font-size:clamp(36px,4.4vw,58px);margin-bottom:12px}
+.parcial .lines{margin-bottom:10px}
+.parcial .copy{margin-top:10px}
 .foot{font-size:12px;color:var(--dim);line-height:1.5;margin:0}
 .copy{margin-top:14px;border:0;border-radius:999px;background:var(--sun);color:var(--night);font-weight:700;padding:9px 16px;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
 .copy:hover{background:var(--paper)}
@@ -305,7 +311,7 @@ section.close{position:relative;min-height:100svh;display:grid;place-items:cente
         <div class="passo">
           <h3><span data-v="construcao"></span> dias úteis</h3>
           <p>Construímos o sistema com os dados e o fluxo de vocês, com duas semanas de testes internos. O site entra no ar nesse período.</p>
-          <span class="chipz">R$ 0</span>
+          <span class="chipz" data-v="chip1"></span>
         </div>
         <div class="passo">
           <h3><span data-v="paralelo"></span> dias úteis</h3>
@@ -319,7 +325,7 @@ section.close{position:relative;min-height:100svh;display:grid;place-items:cente
         </div>
       </div>
       <p class="gigante"><span data-v="diasTotal"></span> dias úteis</p>
-      <p class="sub">até a virada, sem pagar nada pelo sistema. Previsão da virada: <b data-v="viradaMes"></b>.</p>
+      <p class="sub"><span data-v="subFim"></span> Previsão da virada: <b data-v="viradaMes"></b>.</p>
     </div>
   </section>
 
@@ -363,11 +369,11 @@ section.close{position:relative;min-height:100svh;display:grid;place-items:cente
   <section class="tela" id="investimento" data-nome="O investimento">
     <div class="miolo">
       <p class="eyebrow">O investimento</p>
-      <h2 class="titulo"><span data-v="titulo"></span> <em>Nada até a virada.</em></h2>
+      <h2 class="titulo"><span data-v="titulo"></span> <em data-v="tituloEm"></em></h2>
       <div class="quatro">
         <div class="kpi ouro"><div class="n"><s data-v="brutoRiscado"></s><span data-v="total"></span></div><p data-v="k1t"></p></div>
         <div class="kpi"><div class="n" data-v="k2n"></div><p data-v="k2t"></p></div>
-        <div class="kpi"><div class="n">R$ 0</div><p>durante a construção e o uso em paralelo.</p></div>
+        <div class="kpi"><div class="n" data-v="k3n"></div><p data-v="k3t"></p></div>
         <div class="kpi"><div class="n"><span data-v="diasTotal"></span> dias úteis</div><p>até a virada: <span data-v="construcao"></span> de construção e <span data-v="paralelo"></span> em paralelo.</p></div>
       </div>
       <div class="listas">
@@ -462,6 +468,24 @@ const limits = {n:[1,MAX_LIVRE], n1:[1,MAX_LIVRE], n2:[1,MAX_LIVRE], d:[0,100]};
 const PARC_LIVRE = [{v:1,t:'À vista'},{v:6,t:'6×'},{v:10,t:'10×'},{v:12,t:'12×'},{v:18,t:'18×'},{v:24,t:'24×'}];
 const PARC_F2 = [{v:1,t:'À vista'},{v:3,t:'3×'},{v:6,t:'6×'},{v:10,t:'10×'},{v:12,t:'12×'}];
 const DESC = [{v:0,t:'Sem desconto'},{v:5,t:'5%'},{v:10,t:'10%'},{v:15,t:'15%'},{v:20,t:'20%'}];
+let entrada = 0; // vale para as 3 opções
+const ENTR = [{v:0,t:'Sem entrada'},{v:1000,t:'R$ 1.000'},{v:2000,t:'R$ 2.000'},{v:3000,t:'R$ 3.000'},{v:5000,t:'R$ 5.000'}];
+function entradaCtl(){
+  const ops = mode==='parcial' ? ENTR.filter(o=>[0,2000,5000].includes(o.v)) : ENTR;
+  return `<div class="sec"><p class="sec-t">Entrada · na assinatura</p><div class="linhactl"><div class="chips">${ops.map(o=>`<button type="button" class="chip ${entrada===o.v?'on':''}" data-set="entrada" data-v="${o.v}">${o.t}</button>`).join('')}</div><span class="mini"><button type="button" data-step="entrada" data-dir="-1" aria-label="menos R$ 100">–</button><input id="st-entrada" data-k="entrada" type="number" min="0" step="100" value="${entrada}" aria-label="Entrada em reais" style="width:68px"><button type="button" data-step="entrada" data-dir="1" aria-label="mais R$ 100">+</button></span></div></div>`;
+}
+function aplicaEntrada(parts){
+  const soma = parts.reduce((a,x)=>a+x.total,0);
+  let E = Math.min(entrada, soma); const ent = E;
+  parts.forEach(x=>{const a=Math.min(E,x.total); x.liq=Math.max(0,x.total-a); E-=a; x.p=x.liq/x.n;});
+  return ent;
+}
+function cronograma(comps){
+  const ns=[...new Set(comps.map(x=>x.n))].sort((a,b)=>a-b); let ini=1; const out=[];
+  ns.forEach(n=>{const val=comps.filter(x=>x.n>=n).reduce((a,x)=>a+x.p,0);
+    out.push([ini===n?`${n}º mês`:`${ini}º ao ${n}º mês`, brl(val)]); ini=n+1;});
+  return out;
+}
 const DESC_CURTO = [{v:0,t:'0%'},{v:5,t:'5%'},{v:10,t:'10%'},{v:15,t:'15%'},{v:20,t:'20%'}];
 
 function chips(key, opts){
@@ -490,6 +514,7 @@ function renderLeft(){
     h += `<div class="sec"><p class="sec-t">Parcelamento</p>${chips('n',PARC_LIVRE)}</div>`;
     h += `<div class="sec"><p class="sec-t">Desconto</p>${chips('d',DESC)}</div>`;
     h += `<div class="steps">${stepper('n','Parcelas (1 = à vista)')}${stepper('d','Desconto (%)')}</div>`;
+    h += `<div style="margin-top:18px">${entradaCtl()}</div>`;
     if(mode==='total') h += `<div class="notinha">Na Fase 2 completa, o pagamento <b>à vista</b> usa a tabela à vista (${brl(F2_VISTA)}). Parcelado usa ${brl(F2_PARC)} e pode ser dividido junto com a Fase 1 em quantas vezes quiser.</div>`;
   } else {
     // Opção 3 em versão compacta: etapas em linha única, parcelamentos lado a lado, campos +/– junto dos botões
@@ -507,6 +532,7 @@ function renderLeft(){
       <div class="sec"><p class="sec-t">Fase 2 · sugerimos até 12×</p><div class="linhactl"><div class="chips">${PARC_F2.map(o=>`<button type="button" class="chip ${!s.igual&&s.n2===o.v?'on':''}" data-set="n2" data-v="${o.v}">${o.t}</button>`).join('')}<button type="button" class="chip ${s.igual?'on':''}" data-set="igual" data-v="1">Igual à Fase 1 (${s.n1}×)</button></div>${mini('n2','Parcelas Fase 2')}</div></div>
     </div>`;
     h += `<div class="sec"><p class="sec-t">Desconto</p><div class="linhactl">${chips('d',DESC_CURTO)}${mini('d','Desconto em %')}<span style="font-size:12px;color:var(--dim)">%</span></div></div>`;
+    h += entradaCtl();
   }
   document.getElementById('left').innerHTML = h;
 }
@@ -514,50 +540,50 @@ function calc(){
   const s = st[mode], f = 1 - s.d/100;
   if(mode==='f1'){
     const total = FASE1*f;
-    return {n:s.n, parcela:total/s.n, total, bruto:FASE1, d:s.d, f2itens:[],
+    const parts=[{nome:'Fase 1', n:s.n, total}]; const ent=aplicaEntrada(parts);
+    return {n:s.n, parcela:parts[0].p, total, bruto:FASE1, d:s.d, f2itens:[], entrada:ent,
       lines:[['Fase 1 · implantação', brl(FASE1)]],
-      comps:[{nome:'Fase 1', n:s.n, p:total/s.n}]};
+      comps:parts.filter(x=>x.liq>0.004)};
   }
   if(mode==='total'){
     const f2 = s.n===1 ? F2_VISTA : F2_PARC;
     const bruto = FASE1+f2, total = bruto*f;
-    return {n:s.n, parcela:total/s.n, total, bruto, d:s.d, f2itens:FASE2,
+    const parts=[{nome:'Fase 1 + Fase 2', n:s.n, total}]; const ent=aplicaEntrada(parts);
+    return {n:s.n, parcela:parts[0].p, total, bruto, d:s.d, f2itens:FASE2, entrada:ent,
       lines:[['Fase 1 · implantação', brl(FASE1)], [`Fase 2 completa (${s.n===1?'à vista':'parcelado'})`, brl(f2)]],
-      comps:[{nome:'Fase 1 + Fase 2', n:s.n, p:total/s.n}]};
+      comps:parts.filter(x=>x.liq>0.004)};
   }
   const itens = FASE2.filter(i=>s.sel.has(i.id));
   const f2 = itens.reduce((a,i)=>a+(s.n2===1?i.vista:i.parc),0);
-  const t1 = FASE1*f, t2 = f2*f, p1 = t1/s.n1, p2 = t2/s.n2;
-  const sched = [];
-  if(t2>0){
-    const m = Math.min(s.n1,s.n2), M = Math.max(s.n1,s.n2);
-    sched.push([m===1?'1º mês':`1º ao ${m}º mês`, brl(p1+p2)]);
-    if(M>m) sched.push([m+1===M?`${M}º mês`:`${m+1}º ao ${M}º mês`, brl(s.n1>s.n2?p1:p2)]);
-  } else sched.push([s.n1===1?'1º mês':`1º ao ${s.n1}º mês`, brl(p1)]);
-  const comps=[{nome:'Fase 1', n:s.n1, p:p1}]; if(t2>0) comps.push({nome:'Fase 2', n:s.n2, p:p2});
-  return {parcial:true, n1:s.n1, n2:s.n2, p1, p2, t1, t2, total:t1+t2, bruto:FASE1+f2, itens, f2itens:itens, d:s.d, sched, comps,
+  const t1 = FASE1*f, t2 = f2*f;
+  const parts=[{nome:'Fase 1', n:s.n1, total:t1}]; if(t2>0) parts.push({nome:'Fase 2', n:s.n2, total:t2});
+  const ent=aplicaEntrada(parts);
+  const comps=parts.filter(x=>x.liq>0.004);
+  return {parcial:true, n1:s.n1, n2:s.n2, t1, t2, total:t1+t2, bruto:FASE1+f2, itens, f2itens:itens, d:s.d, entrada:ent,
+    sched:cronograma(comps), comps,
     lines:[['Fase 1 · implantação', brl(FASE1)],
            [`Fase 2 · ${itens.length} de ${FASE2.length} etapas (${s.n2===1?'à vista':'parcelado'})`, brl(f2)]]};
 }
 function renderRight(){
   const c = calc(); let h = '';
-  if(!c.parcial){
-    h += `<p class="r-label">${c.n===1?'Pagamento à vista':'Parcela mensal'}</p>`;
+  const cs = c.comps, mes1 = cs.reduce((a,x)=>a+x.p,0);
+  if(!cs.length){
+    h += `<p class="r-label">Pago na entrada</p><p class="big">${brl(c.entrada)}</p>`;
+  } else if(!c.parcial){
+    h += `<p class="r-label">${c.n===1?(c.entrada>0?'Saldo à vista':'Pagamento à vista'):'Parcela mensal'}</p>`;
     h += `<p class="big">${c.n===1?'':`${c.n} <span class="x">×</span> `}${brl(c.parcela)}</p>`;
   } else {
-    const both = c.t2>0;
-    h += `<p class="r-label">${both?'Parcela do 1º mês (Fase 1 + Fase 2)':'Parcela mensal'}</p>`;
-    h += `<p class="big">${brl(both?c.p1+c.p2:c.p1)}</p>`;
-    h += `<div class="lines">
-      <div class="line"><span>Fase 1</span><span>${c.n1===1?'à vista':c.n1+'×'} ${brl(c.p1)}</span></div>
-      ${both?`<div class="line"><span>Fase 2</span><span>${c.n2===1?'à vista':c.n2+'×'} ${brl(c.p2)}</span></div>`:''}
-      ${c.sched.map(l=>`<div class="line"><span>${l[0]}</span><span>${l[1]}/mês</span></div>`).join('')}
-    </div>`;
+    h += `<p class="r-label">${cs.length>1?'Parcela do 1º mês (Fase 1 + Fase 2)':'Parcela mensal'}</p>`;
+    h += `<p class="big">${brl(mes1)}</p>`;
+    h += `<div class="lines">` + cs.map(x=>`<div class="line"><span>${x.nome}</span><span>${x.n===1?'à vista':x.n+'×'} ${brl(x.p)}</span></div>`).join('') +
+      c.sched.map(l=>`<div class="line"><span>${l[0]}</span><span>${l[1]}/mês</span></div>`).join('') + `</div>`;
   }
   h += `<div class="lines">` + c.lines.map(l=>`<div class="line"><span>${l[0]}</span><span>${l[1]}</span></div>`).join('');
   if(c.d>0) h += `<div class="line neg"><span>Desconto ${String(c.d).replace('.',',')}%</span><span>− ${brl(c.bruto-c.total)}</span></div>`;
-  h += `<div class="line tot"><span>Total</span><span>${brl(c.total)}</span></div></div>`;
-  h += `<p class="foot">Valores de implantação. A manutenção mensal é cobrada à parte. ${mode==='parcial'?'Sugerimos a Fase 2 em até 12×, mas dá para parcelar em mais vezes ou no mesmo prazo da Fase 1; a Fase 2 é sempre somada à Fase 1.':''}</p>`;
+  h += `<div class="line tot"><span>Total</span><span>${brl(c.total)}</span></div>`;
+  if(c.entrada>0) h += `<div class="line"><span>Entrada · na assinatura</span><span>${brl(c.entrada)}</span></div><div class="line"><span>Saldo</span><span>${brl(c.total-c.entrada)}</span></div>`;
+  h += `</div>`;
+  h += `<p class="foot">Valores de implantação. A manutenção mensal é cobrada à parte. ${mode==='parcial'?'Sugerimos a Fase 2 em até 12×, mas dá para parcelar em mais vezes ou no mesmo prazo da Fase 1; a Fase 2 é sempre somada à Fase 1.':''}${c.entrada>0&&mode==='parcial'?' A entrada abate primeiro da Fase 1.':''}</p>`;
   h += `<button type="button" class="copy" id="copy">Copiar resumo</button>`;
   document.getElementById('right').innerHTML = h;
   document.getElementById('copy').onclick = () => copiar(c);
@@ -567,11 +593,13 @@ function copiar(c){
   const m = MODES.find(x=>x.id===mode).nome;
   let t = `${m}\n` + c.lines.map(l=>`${l[0]}: ${l[1]}`).join('\n');
   if(c.d>0) t += `\nDesconto ${c.d}%: − ${brl(c.bruto-c.total)}`;
-  t += `\nTotal: ${brl(c.total)}\n`;
-  if(!c.parcial) t += c.n===1?`Pagamento à vista: ${brl(c.parcela)}`:`${c.n}× de ${brl(c.parcela)}`;
+  t += `\nTotal: ${brl(c.total)}`;
+  if(c.entrada>0) t += `\nEntrada na assinatura: ${brl(c.entrada)}\nSaldo: ${brl(c.total-c.entrada)}`;
+  if(!c.comps.length) t += `\nQuitado na entrada.`;
+  else if(!c.parcial) t += c.n===1?`\n${c.entrada>0?'Saldo':'Pagamento'} à vista: ${brl(c.parcela)}`:`\n${c.n}× de ${brl(c.parcela)}`;
   else {
-    t += `Fase 1: ${c.n1===1?'à vista':c.n1+'×'} ${brl(c.p1)}`;
-    if(c.t2>0) t += `\nFase 2: ${c.n2===1?'à vista':c.n2+'×'} ${brl(c.p2)}\nEtapas: ${c.itens.map(i=>i.nome).join(', ')}`;
+    t += '\n' + c.comps.map(x=>`${x.nome}: ${x.n===1?'à vista':x.n+'×'} ${brl(x.p)}`).join('\n');
+    if(c.t2>0) t += `\nEtapas: ${c.itens.map(i=>i.nome).join(', ')}`;
     t += '\n' + c.sched.map(l=>`${l[0]}: ${l[1]}/mês`).join('\n');
   }
   const b = document.getElementById('copy');
@@ -580,6 +608,7 @@ function copiar(c){
 }
 function setVal(key, v){
   const s = st[mode];
+  if(key==='entrada'){ v = Number(v); if(isNaN(v)) return; entrada = 0; const teto = Math.round(calc().total*100)/100; entrada = clamp(Math.round(v), 0, teto); render(); return; }
   if(key==='igual'){ s.igual=true; s.n2=s.n1; render(); return; }
   v = Number(v); if(isNaN(v)) return;
   s[key] = clamp(key==='d'?Math.round(v*10)/10:Math.round(v), ...limits[key]);
@@ -627,19 +656,26 @@ function atualizarSlides(c){
   else if(recorrentes.length) primeiro=`A primeira parcela, de ${brl(mensalSistema)}, vem aqui`;
   else primeiro=`O pagamento à vista, de ${brl(avistaValor)}, é feito aqui`;
 
+  const E=c.entrada;
   let titulo;
-  if(c.comps.length===1) titulo = c.comps[0].n===1 ? `${mil(c.total)} à vista.` : `${mil(c.total)} em ${c.comps[0].n} parcelas.`;
-  else titulo = `${mil(c.total)}: Fase 1 ${vezes(c.n1)} e Fase 2 ${vezes(c.n2)}.`;
+  if(!c.comps.length) titulo = `${mil(c.total)} pagos na entrada.`;
+  else if(E>0){
+    if(c.comps.length===1) titulo = c.comps[0].n===1 ? `${mil(c.total)}: entrada e saldo à vista.` : `${mil(c.total)}: entrada e ${c.comps[0].n} parcelas.`;
+    else titulo = `${mil(c.total)}: entrada, Fase 1 ${vezes(c.comps[0].n)} e Fase 2 ${vezes(c.comps[1].n)}.`;
+  }
+  else if(c.comps.length===1) titulo = c.comps[0].n===1 ? `${mil(c.total)} à vista.` : `${mil(c.total)} em ${c.comps[0].n} parcelas.`;
+  else titulo = `${mil(c.total)}: Fase 1 ${vezes(c.comps[0].n)} e Fase 2 ${vezes(c.comps[1].n)}.`;
 
   const k1t = mode==='f1' ? "sistema da fase 1, plataforma própria." :
               mode==='total' ? "fase 1 e fase 2 completa." : `fase 1 e ${c.itens.length} de ${FASE2.length} etapas da fase 2.`;
   let k2n,k2t;
-  if(c.comps.length===1){
-    if(c.comps[0].n===1){k2n="À vista"; k2t="pagamento único na virada.";}
-    else {k2n=`${c.comps[0].n} × ${brl0(Math.round(c.comps[0].p*100)/100)}`; k2t="parcelas mensais, sem juros.";}
+  if(!c.comps.length){k2n="Entrada"; k2t="valor total pago na assinatura.";}
+  else if(c.comps.length===1){
+    if(c.comps[0].n===1){k2n="À vista"; k2t=E>0?`saldo de ${brl0(Math.round(c.comps[0].p*100)/100)} pago na virada.`:"pagamento único na virada.";}
+    else {k2n=`${c.comps[0].n} × ${brl0(Math.round(c.comps[0].p*100)/100)}`; k2t=E>0?"parcelas mensais, sem juros, depois da entrada.":"parcelas mensais, sem juros.";}
   } else {
-    k2n=brl0(Math.round((c.p1+(c.t2>0?c.p2:0))*100)/100)+"/mês";
-    k2t=c.sched.map(l=>`${l[0]}: ${l[1]}`).join(" · ")+".";
+    k2n=brl0(Math.round(c.comps.reduce((a,x)=>a+x.p,0)*100)/100)+"/mês";
+    k2t=(c.sched.length?c.sched:[]).map(l=>`${l[0]}: ${l[1]}`).join(" · ")+".";
   }
 
   let d1n,d1t,d2n,d2t,d3n,d3t;
@@ -653,8 +689,8 @@ function atualizarSlides(c){
     d3n=brl0(Math.round(Math.abs(dif)));
     d3t=dif>=0?"a mais do que vocês já pagam hoje pela plataforma alugada, numa plataforma exclusiva da Meu Estágio.":"a menos do que vocês pagam hoje pela plataforma alugada, numa plataforma exclusiva da Meu Estágio.";
   } else {
-    d1n="R$ 0/mês"; d1t="de parcela depois da virada: o sistema foi pago à vista.";
-    d2n=brl0(Math.round(avistaValor/socios)); d2t="por sócio, uma única vez, na virada.";
+    d1n="R$ 0/mês"; d1t=c.comps.length?"de parcela depois da virada: o sistema foi pago à vista.":"de parcela depois da virada: o sistema foi quitado na entrada.";
+    d2n=brl0(Math.round((avistaValor+E)/socios)); d2t=E>0?"por sócio, somando a entrada e o pagamento à vista.":"por sócio, uma única vez, na virada.";
     d3n=brl0(atual); d3t="por mês que deixam de pagar pela plataforma alugada.";
   }
   const faixa = custoMes>0
@@ -663,7 +699,12 @@ function atualizarSlides(c){
 
   const v={construcao,paralelo,diasTotal,
     viradaMes: virada?meses[virada.getUTCMonth()]+" de "+virada.getUTCFullYear():"defina o início",
-    primeiroPagamento: primeiro, titulo, total: brl0(Math.round(c.total*100)/100),
+    primeiroPagamento: primeiro, titulo,
+    tituloEm: E>0?"Só a entrada até a virada.":"Nada até a virada.",
+    chip1: E>0?`Entrada · ${brl0(E)}`:"R$ 0",
+    subFim: E>0?`até a virada, sem parcelas: só a entrada de ${brl0(E)} na assinatura.`:"até a virada, sem pagar nada pelo sistema.",
+    k3n: E>0?brl0(E):"R$ 0",
+    k3t: E>0?"de entrada na assinatura. Nenhuma parcela até a virada.":"durante a construção e o uso em paralelo.", total: brl0(Math.round(c.total*100)/100),
     brutoRiscado: c.d>0?brl0(c.bruto):"", k1t, k2n, k2t, d1n,d1t,d2n,d2t,d3n,d3t,
     atualTxt: brl0(atual),
     legendaSistema: custoMes>0?`sistema próprio, ${manut>0?"parcela e manutenção":"parcela"} de ${brl0(Math.round(custoMes*100)/100)}`:"sistema próprio, pago à vista"};
@@ -697,14 +738,14 @@ function atualizarSlides(c){
   }
   document.getElementById("alerta").textContent=avisos.join(" ");
 }
-function render(){ renderModes(); renderLeft(); const c=renderRight(); atualizarSlides(c); }
+function render(){ entrada = Math.min(entrada, Math.round(calc().total*100)/100); renderModes(); renderLeft(); const c=renderRight(); atualizarSlides(c); }
 
 document.addEventListener('click', e=>{
   const t = e.target.closest('[data-mode],[data-set],[data-step]');
   if(!t) return;
   if(t.dataset.mode){ mode = t.dataset.mode; render(); }
   else if(t.dataset.set) setVal(t.dataset.set, t.dataset.v);
-  else if(t.dataset.step){ const k=t.dataset.step; setVal(k, st[mode][k] + Number(t.dataset.dir)); }
+  else if(t.dataset.step){ const k=t.dataset.step; if(k==='entrada') setVal(k, entrada + 100*Number(t.dataset.dir)); else setVal(k, st[mode][k] + Number(t.dataset.dir)); }
 });
 document.addEventListener('change', e=>{
   const t = e.target;
