@@ -229,6 +229,36 @@ section.close{position:relative;min-height:100svh;display:grid;place-items:cente
 @keyframes swing{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(6deg)}}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(246,185,43,.45)}70%{box-shadow:0 0 0 22px rgba(246,185,43,0)}100%{box-shadow:0 0 0 0 rgba(246,185,43,0)}}
 
+
+/* ===== Animações (mesma linguagem do site do Ranan) ===== */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}.rv.d5{transition-delay:.4s}
+h2.titulo.split .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em}
+h2.titulo.split .w > span{display:inline-block;transform:translateY(105%);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+h2.titulo.split.in .w > span{transform:none}
+/* Como funciona: rolagem guia a linha do tempo */
+section#como{min-height:250vh;display:block;padding-top:0;padding-bottom:0}
+#como .miolo{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:96px 0 40px}
+#como .trilha::before{right:auto;width:calc((100% - 8px) * var(--grow,0))}
+#como .passo{opacity:.3;transform:translateY(10px);transition:opacity .5s,transform .5s}
+#como .passo.on{opacity:1;transform:none}
+#como .passo::before{transition:background .3s,box-shadow .3s}
+#como .passo.on::before{background:var(--sun);box-shadow:0 0 0 6px rgba(246,185,43,.18)}
+/* Peso no caixa: colunas sobem */
+#caixa .col .bar{transform-origin:bottom;transform:scaleY(0);transition:transform 1s cubic-bezier(.2,.8,.2,1),height .45s}
+#caixa .col:nth-child(2) .bar{transition-delay:.15s}
+#caixa .col:nth-child(3) .bar{transition-delay:.3s}
+#caixa.in .col .bar{transform:none}
+@media (max-width:900px){section#como{min-height:auto}#como .miolo{position:static;min-height:0;padding:0}#como .passo{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none}
+  h2.titulo.split .w > span{transform:none}
+  section#como{min-height:100svh}#como .miolo{position:static}
+  #como .passo{opacity:1;transform:none}
+  #caixa .col .bar{transform:none}
+}
+
 /* Premissas (uso interno) */
 .btn-prem{position:fixed;left:18px;bottom:18px;z-index:30;border:1.2px solid var(--line);background:rgba(27,33,80,.92);color:var(--lav);border-radius:999px;padding:8px 14px;font-size:12.5px;cursor:pointer;opacity:.55}
 .btn-prem:hover{opacity:1}
@@ -270,10 +300,10 @@ section.close{position:relative;min-height:100svh;display:grid;place-items:cente
   <!-- 1 · COMBINADO CLARO -->
   <section class="tela" id="combinado" data-nome="Combinado claro">
     <div class="miolo">
-      <p class="eyebrow">Combinado claro desde o começo</p>
+      <p class="eyebrow rv">Combinado claro desde o começo</p>
       <h2 class="titulo">Primeiro o que organiza. <em>Depois o que automatiza.</em></h2>
       <div class="fases">
-        <div class="fase f1">
+        <div class="fase f1 rv d1">
           <span class="tag">Fase 1 · O que entra no sistema</span>
           <ul>
             <li>Telas separadas para agência, empresa e estudante</li>
@@ -286,7 +316,7 @@ section.close{position:relative;min-height:100svh;display:grid;place-items:cente
             <li>Busca e conferência pelo CPF</li>
           </ul>
         </div>
-        <div class="fase f2">
+        <div class="fase f2 rv d2">
           <span class="tag">Fase 2 · Integrações, uma de cada vez</span>
           <ul>
             <li><span><b>1. Assinatura:</b> envio e status automáticos pelo ZapSign</span></li>
@@ -298,14 +328,14 @@ section.close{position:relative;min-height:100svh;display:grid;place-items:cente
           <small>A numeração é a ordem que sugerimos; quem decide a ordem são vocês. Cada integração é testada antes no ambiente do terceiro e só então orçada, à parte.</small>
         </div>
       </div>
-      <p class="nota">Antes de qualquer entrega: duas semanas de testes internos com a nossa equipe e duas de homologação com vocês, tela por tela.</p>
+      <p class="nota rv d3">Antes de qualquer entrega: duas semanas de testes internos com a nossa equipe e duas de homologação com vocês, tela por tela.</p>
     </div>
   </section>
 
   <!-- 2 · COMO FUNCIONA -->
   <section class="tela" id="como" data-nome="Como funciona">
     <div class="miolo">
-      <p class="eyebrow">Como funciona</p>
+      <p class="eyebrow rv">Como funciona</p>
       <h2 class="titulo">Vocês só começam a pagar <em>depois de usar.</em></h2>
       <div class="trilha">
         <div class="passo">
@@ -324,17 +354,17 @@ section.close{position:relative;min-height:100svh;display:grid;place-items:cente
           <span class="chipz sol">Começa o pagamento</span>
         </div>
       </div>
-      <p class="gigante"><span data-v="diasTotal"></span> dias úteis</p>
-      <p class="sub"><span data-v="subFim"></span> Previsão da virada: <b data-v="viradaMes"></b>.</p>
+      <p class="gigante"><span id="contador">0</span> dias úteis</p>
+      <p class="sub rv d2"><span data-v="subFim"></span> Previsão da virada: <b data-v="viradaMes"></b>.</p>
     </div>
   </section>
 
   <!-- 3 · SIMULE O INVESTIMENTO -->
   <section class="tela" id="simule" data-nome="Simule o investimento">
     <div class="miolo">
-      <p class="eyebrow">Simule o investimento</p>
-      <div class="modes" id="modes"></div>
-      <div class="simcard" id="simcard">
+      <p class="eyebrow rv">Simule o investimento</p>
+      <div class="modes rv d1" id="modes"></div>
+      <div class="simcard rv d2" id="simcard">
         <div id="left"></div>
         <div id="right"></div>
       </div>
@@ -344,7 +374,7 @@ section.close{position:relative;min-height:100svh;display:grid;place-items:cente
   <!-- 4 · PESO NO CAIXA -->
   <section class="tela" id="caixa" data-nome="O peso no caixa">
     <div class="miolo">
-      <p class="eyebrow">O peso no caixa</p>
+      <p class="eyebrow rv">O peso no caixa</p>
       <h2 class="titulo">A agência cresce. <em>O custo do sistema fica do mesmo tamanho.</em></h2>
       <div class="caixa">
         <div>
@@ -355,28 +385,28 @@ section.close{position:relative;min-height:100svh;display:grid;place-items:cente
             <span><i style="background:var(--sun)"></i><span data-v="legendaSistema"></span></span>
           </div>
         </div>
-        <div class="destaques">
+        <div class="destaques rv d3">
           <div class="dest"><div class="n" data-v="d1n"></div><p data-v="d1t"></p></div>
           <div class="dest"><div class="n" data-v="d2n"></div><p data-v="d2t"></p></div>
           <div class="dest"><div class="n" data-v="d3n"></div><p data-v="d3t"></p></div>
         </div>
       </div>
-      <div class="faixa" data-html="faixa"></div>
+      <div class="faixa rv d4" data-html="faixa"></div>
     </div>
   </section>
 
   <!-- 5 · O INVESTIMENTO -->
   <section class="tela" id="investimento" data-nome="O investimento">
     <div class="miolo">
-      <p class="eyebrow">O investimento</p>
-      <h2 class="titulo"><span data-v="titulo"></span> <em data-v="tituloEm"></em></h2>
+      <p class="eyebrow rv">O investimento</p>
+      <h2 class="titulo rv"><span data-v="titulo"></span> <em data-v="tituloEm"></em></h2>
       <div class="quatro">
-        <div class="kpi ouro"><div class="n"><s data-v="brutoRiscado"></s><span data-v="total"></span></div><p data-v="k1t"></p></div>
-        <div class="kpi"><div class="n" data-v="k2n"></div><p data-v="k2t"></p></div>
-        <div class="kpi"><div class="n" data-v="k3n"></div><p data-v="k3t"></p></div>
-        <div class="kpi"><div class="n"><span data-v="diasTotal"></span> dias úteis</div><p>até a virada: <span data-v="construcao"></span> de construção e <span data-v="paralelo"></span> em paralelo.</p></div>
+        <div class="kpi ouro rv d1"><div class="n"><s data-v="brutoRiscado"></s><span data-v="total"></span></div><p data-v="k1t"></p></div>
+        <div class="kpi rv d2"><div class="n" data-v="k2n"></div><p data-v="k2t"></p></div>
+        <div class="kpi rv d3"><div class="n" data-v="k3n"></div><p data-v="k3t"></p></div>
+        <div class="kpi rv d4"><div class="n"><span data-v="diasTotal"></span> dias úteis</div><p>até a virada: <span data-v="construcao"></span> de construção e <span data-v="paralelo"></span> em paralelo.</p></div>
       </div>
-      <div class="listas">
+      <div class="listas rv d5">
         <div><h4>O que está incluído</h4><ul id="incluido"></ul></div>
         <div><h4>Combinado à parte</h4><ul id="aparte"></ul></div>
       </div>
@@ -386,12 +416,12 @@ section.close{position:relative;min-height:100svh;display:grid;place-items:cente
   <!-- 6 · PRÓXIMOS PASSOS -->
   <section class="tela" id="passos" data-nome="Próximos passos">
     <div class="miolo">
-      <p class="eyebrow">Próximos passos</p>
+      <p class="eyebrow rv">Próximos passos</p>
       <h2 class="titulo">Segunda a gente ouviu. <em>Hoje a gente alinha.</em></h2>
       <div class="agenda">
-        <div class="dia"><h3>Segunda 9 <span>feito</span></h3><p>Vocês mostraram o fácilCON: o que usam todo dia, o que trava e o que faz falta.</p></div>
-        <div class="dia"><h3>Terça a sexta <span>feito</span></h3><p>Ajustamos o site e o protótipo do sistema ao que vimos. Os dois estão no ar e vocês acabaram de ver.</p></div>
-        <div class="dia hoje"><h3>Hoje, sábado 14</h3><p>Proposta final para validação. Depois vem o contrato, com revisão jurídica, e a construção começa na segunda seguinte à assinatura.</p></div>
+        <div class="dia rv d1"><h3>Segunda 9 <span>feito</span></h3><p>Vocês mostraram o fácilCON: o que usam todo dia, o que trava e o que faz falta.</p></div>
+        <div class="dia rv d2"><h3>Terça a sexta <span>feito</span></h3><p>Ajustamos o site e o protótipo do sistema ao que vimos. Os dois estão no ar e vocês acabaram de ver.</p></div>
+        <div class="dia hoje rv d3"><h3>Hoje, sábado 14</h3><p>Proposta final para validação. Depois vem o contrato, com revisão jurídica, e a construção começa na segunda seguinte à assinatura.</p></div>
       </div>
     </div>
   </section>
@@ -640,6 +670,7 @@ function atualizarSlides(c){
   const atual=num("atual"), manut=num("manut"), ticket=num("ticket"), socios=Math.max(1,Math.round(num("socios"))), redes=num("redes");
   const construcao=Math.round(num("construcao")), paralelo=Math.round(num("paralelo")), diasTotal=construcao+paralelo;
   const virada=somaUteis(P.inicio.value,Math.max(1,diasTotal));
+  window.__dias=diasTotal; if(window.__comoScroll) window.__comoScroll();
 
   const recorrentes=c.comps.filter(x=>x.n>1), avista=c.comps.filter(x=>x.n===1);
   const mensalSistema=recorrentes.reduce((a,x)=>a+x.p,0);
@@ -893,6 +924,43 @@ ceu(); addEventListener("resize",ceu);
   }
   layout(true);requestAnimationFrame(tick);
   var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){layout(false)},120)});
+})();
+
+/* ===== Animações: entrada com a rolagem, títulos palavra por palavra, linha do tempo e colunas ===== */
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // títulos fixos sobem palavra por palavra (o do investimento muda com o simulador, então só aparece)
+  document.querySelectorAll('h2.titulo:not(.rv)').forEach(function(h){
+    var d=0;
+    function quebra(txt){return txt.split(/(\s+)/).map(function(t){if(!t.trim())return t;var s='<span class="w"><span style="transition-delay:'+(d*0.05).toFixed(2)+'s">'+t+'</span></span>';d++;return s}).join('')}
+    var html='';
+    h.childNodes.forEach(function(n){
+      if(n.nodeType===3) html+=quebra(n.textContent);
+      else if(n.tagName==='EM') html+='<em>'+quebra(n.textContent)+'</em>';
+      else html+=n.outerHTML;
+    });
+    h.innerHTML=html; h.classList.add('split');
+  });
+  var alvos=[].slice.call(document.querySelectorAll('.rv, h2.titulo.split, #caixa'));
+  if(reduce||!('IntersectionObserver' in window)){alvos.forEach(function(e){e.classList.add('in')});}
+  else{
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.18,rootMargin:'0px 0px -6% 0px'});
+    alvos.forEach(function(e){io.observe(e)});
+  }
+  // Como funciona: a rolagem desenha a linha, acende as etapas e conta os dias
+  var como=document.getElementById('como'), passos=[].slice.call(como.querySelectorAll('.passo')), cont=document.getElementById('contador');
+  function cl(v){return Math.max(0,Math.min(1,v))}
+  function comoScroll(){
+    var total=window.__dias||0, q;
+    if(reduce||innerWidth<=900){q=1}
+    else{var r=como.getBoundingClientRect(), curso=como.offsetHeight-innerHeight; q=curso>0?cl(-r.top/curso):1;}
+    var g=cl(q/.65);
+    como.style.setProperty('--grow',g.toFixed(3));
+    passos.forEach(function(p,i){p.classList.toggle('on', g>=i/2-0.001 && (q>0.02||i===0))});
+    cont.textContent=Math.round(total*g);
+  }
+  window.__comoScroll=comoScroll;
+  addEventListener('scroll',comoScroll,{passive:true}); addEventListener('resize',comoScroll); comoScroll();
 })();
 </script>
 </body>
