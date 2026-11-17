@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14183A">
+<title>Meu Estágio · Agência de Estágios</title>
+<meta name="description" content="Meu Estágio, agência de estágios do Paraná. Conectando talentos a experiências únicas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#14183A; --night2:#1B2150; --indigo:#3B4BB3; --deep:#27338A; --sun:#F6B92B;
+  --paper:#F6F4EE; --card:#FBFAF6; --lav:#DCE0F7; --lavm:#8A97D8; --mist:#AEB6EA; --dim:#7D86C2;
+  --ink2:#4A4F6E; --line:rgba(138,151,216,.28); --lineL:rgba(20,24,58,.14);
+  --fd:"Sora",system-ui,sans-serif; --fb:"DM Sans",system-ui,sans-serif;
+  --gut:clamp(22px,6.5vw,128px);
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;background:var(--night);color:var(--paper);font-family:var(--fb);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p{margin:0}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--sun);outline-offset:3px}
+
+/* ===== Fundo do céu (só aparece nas telas escuras) ===== */
+#ceu{position:fixed;inset:0;z-index:0;pointer-events:none}
+.brilho{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(60% 50% at 50% 10%,rgba(59,75,179,.35),transparent 70%),
+             linear-gradient(rgba(138,151,216,.04) 1px,transparent 1px) 0 0/64px 64px,
+             linear-gradient(90deg,rgba(138,151,216,.04) 1px,transparent 1px) 0 0/64px 64px}
+
+/* ===== Cabeçalho, progresso e pontos (a cor acompanha a tela) ===== */
+body{--hc:var(--paper);--hd:var(--mist);--hb:var(--night)}
+body[data-tema="papel"]{--hc:var(--night);--hd:var(--indigo);--hb:var(--paper)}
+body[data-tema="sol"]{--hc:var(--night);--hd:var(--night);--hb:var(--sun)}
+body[data-tema="indigo"]{--hb:var(--indigo)}
+body[data-tema="fim"]{--hb:transparent}
+.progresso{position:fixed;top:0;left:0;height:3px;width:0;z-index:30;background:linear-gradient(90deg,var(--indigo),var(--sun))}
+header.top{position:fixed;top:0;left:0;right:0;z-index:25;display:flex;justify-content:space-between;align-items:center;padding:18px var(--gut);color:var(--hc);transition:color .4s;pointer-events:none}
+@media (max-width:900px){header.top{background:linear-gradient(var(--hb) 62%,transparent);padding-bottom:26px}}
+.marca{display:flex;align-items:center;gap:9px;font-family:var(--fd);font-weight:800;font-size:13px;letter-spacing:-.01em;opacity:0;transform:translateY(-6px);transition:opacity .5s,transform .5s,color .4s}
+body.rolou .marca{opacity:1;transform:none}
+.marca svg{width:22px;height:20px}
+.marca svg .tr{stroke:currentColor}.marca svg .fl{fill:currentColor}
+.contador{font-family:var(--fd);font-size:11px;font-weight:600;letter-spacing:.22em;color:var(--hd);transition:color .4s;font-variant-numeric:tabular-nums}
+nav.dots{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:25;display:flex;flex-direction:column;gap:10px}
+nav.dots a{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--hd);display:block;transition:background .3s,border-color .3s,transform .3s}
+nav.dots a.on{background:var(--sun);border-color:var(--sun);transform:scale(1.25)}
+body[data-tema="sol"] nav.dots a.on{background:var(--night);border-color:var(--night)}
+
+/* ===== Telas ===== */
+main{position:relative;z-index:1}
+section.tela{position:relative;min-height:100svh;padding:110px var(--gut) 90px;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.t-papel{background:var(--paper);color:var(--night)}
+.t-sol{background:var(--sun);color:var(--night)}
+.t-indigo{background:var(--indigo);color:var(--paper)}
+.t-noite{background:transparent;color:var(--paper)}
+.miolo{width:100%;max-width:1180px;margin:0 auto;position:relative;z-index:1}
+.eyebrow{font-family:var(--fd);font-size:13px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--indigo);display:flex;align-items:center;gap:12px;margin:0 0 22px}
+.eyebrow::before{content:"";width:26px;height:2px;background:currentColor}
+.t-noite .eyebrow,.t-indigo .eyebrow{color:var(--sun)}
+.t-sol .eyebrow{color:var(--night)}
+.titulo{font-family:var(--fd);font-weight:800;font-size:clamp(36px,5.6vw,80px);line-height:1.03;letter-spacing:-.035em;text-wrap:balance}
+.titulo.m{font-size:clamp(32px,4.4vw,60px)}
+.titulo em{font-style:normal;color:var(--sun)}
+
+/* 1 · Capa */
+#capa{padding:0;display:grid;grid-template-columns:1.45fr 1fr;min-height:100svh}
+.capa-txt{padding:clamp(90px,12vh,130px) var(--gut) clamp(60px,9vh,96px);display:flex;flex-direction:column;justify-content:space-between;gap:48px;background:var(--night)}
+.capa-marca p:first-child{font-family:var(--fd);font-weight:800;font-size:clamp(24px,2.6vw,36px);letter-spacing:-.02em;line-height:1}
+.capa-marca p:last-child{font-size:12.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--mist);margin-top:10px}
+.capa-h{font-family:var(--fd);font-weight:800;font-size:clamp(44px,6.6vw,104px);line-height:1;letter-spacing:-.045em;max-width:9.5ch}
+.capa-h .y{color:var(--sun)}
+.capa-sub{font-size:clamp(16px,1.5vw,20px);color:#C9CDE8;max-width:34ch;margin-top:28px}
+.capa-arte{position:relative;background:var(--indigo);display:grid;place-items:center;overflow:hidden}
+.capa-arte .orbitas{position:absolute;inset:0;width:100%;height:100%}
+.capa-arte .orbitas *{vector-effect:non-scaling-stroke}
+.giro{transform-origin:50% 50%;transform-box:fill-box;animation:gira 60s linear infinite}
+.simbolo{position:relative;width:min(62%,420px);aspect-ratio:1;overflow:visible}
+.rolar{position:absolute;left:var(--gut);bottom:28px;display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);text-decoration:none}
+.rolar svg{animation:quica 1.8s ease-in-out infinite}
+
+/* Símbolo da capa: entrada da logo (a arte final é a logo oficial, sem alteração) */
+.s-tr{stroke-dasharray:120;stroke-dashoffset:120;animation:traca 1.4s var(--ease) .25s forwards}
+.s-tr.b{animation-delay:.45s}.s-tr.c{animation-delay:.65s}
+.s-cap{opacity:0;animation:capelo 1s cubic-bezier(.2,.9,.3,1.3) 1.05s forwards}
+.s-borla{transform-origin:76px 34.5px;transform-box:view-box;animation:balanca 3.6s ease-in-out 2.4s infinite}
+.s-p{transform-origin:50px 63px;transform-box:view-box;transform:rotate(var(--a));opacity:0;animation:orbita .9s var(--ease) forwards;animation-delay:var(--d)}
+.s-halo{transform-origin:50px 63px;transform-box:view-box;opacity:0;animation:halo 2.6s ease-out 2.3s 2 forwards}
+
+/* 2 · Quem somos */
+.regua{height:2px;background:var(--night);opacity:.85;margin:clamp(48px,9vh,110px) 0 34px;transform-origin:left;transform:scaleX(0);transition:transform 1.2s var(--ease) .3s}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:start}
+.lead{font-family:var(--fd);font-weight:600;font-size:clamp(20px,2vw,28px);line-height:1.3;letter-spacing:-.01em}
+.corpo{font-size:clamp(16px,1.35vw,19px);color:var(--ink2);line-height:1.6}
+
+/* 3 · Como trabalhamos */
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:clamp(36px,6vh,64px)}
+.card{background:var(--card);border:1px solid var(--lineL);border-radius:22px;padding:clamp(24px,2.6vw,36px);min-height:clamp(220px,32vh,340px);transition:transform .35s var(--ease),box-shadow .35s}
+.card:hover{transform:translateY(-6px);box-shadow:0 24px 50px -28px rgba(20,24,58,.45)}
+.card .n{font-family:var(--fd);font-weight:800;font-size:clamp(36px,3.6vw,52px);letter-spacing:-.03em;color:var(--indigo);line-height:1}
+.card h3{font-family:var(--fd);font-weight:700;font-size:clamp(20px,1.9vw,26px);letter-spacing:-.015em;margin:16px 0 10px;line-height:1.2}
+.card p{color:var(--ink2);font-size:16px}
+.card.destaque{background:var(--indigo);border-color:var(--indigo);color:var(--paper)}
+.card.destaque .n{color:var(--sun)}
+.card.destaque p{color:var(--lav)}
+
+/* 4 · Por que (amarelo) */
+.t-sol .titulo{font-size:clamp(40px,6.4vw,96px);max-width:15ch}
+.t-sol .corpo{color:var(--night);max-width:46ch;margin-top:34px;font-size:clamp(17px,1.5vw,21px)}
+.capelo{position:absolute;right:var(--gut);top:clamp(90px,15vh,150px);width:clamp(90px,10vw,150px);z-index:1}
+.capelo svg{width:100%;height:auto;display:block}
+
+/* 5 · Vantagens */
+.grid4{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:clamp(32px,5vh,56px)}
+.vant{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;border:1.2px solid var(--line);background:rgba(27,33,80,.55);border-radius:20px;padding:clamp(22px,2.4vw,32px);transition:transform .35s var(--ease),border-color .35s}
+.vant:hover{transform:translateY(-4px);border-color:var(--lavm)}
+.vant .n{font-family:var(--fd);font-weight:800;font-size:clamp(20px,1.8vw,26px);color:var(--sun);line-height:1.2}
+.vant h3{font-family:var(--fd);font-weight:700;font-size:clamp(19px,1.8vw,25px);letter-spacing:-.015em;line-height:1.2}
+.vant p{grid-column:2;color:var(--lav);font-size:16px}
+.vant.destaque{background:var(--indigo);border-color:var(--indigo)}
+
+/* 6 · Na prática */
+.pratica{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(32px,6vw,96px);align-items:start}
+.lista{border-top:2px solid var(--night)}
+.lista .it{padding:clamp(16px,2.4vh,24px) 0;position:relative}
+.lista .it::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--lineL);transform-origin:left;transform:scaleX(0);transition:transform 1s var(--ease)}
+.lista .it:last-child::after{display:none}
+.lista h3{font-family:var(--fd);font-weight:700;font-size:clamp(22px,2.1vw,30px);letter-spacing:-.015em}
+.lista p{color:var(--ink2);font-size:clamp(15px,1.3vw,18px);margin-top:4px}
+
+/* 7 · Lei */
+.lei-topo{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(24px,5vw,80px);align-items:start}
+.lei-topo .corpo{color:var(--lav)}
+.numeros{display:grid;grid-template-columns:repeat(4,1fr);margin-top:clamp(48px,9vh,100px);position:relative}
+.numeros::before{content:"";position:absolute;left:0;right:0;top:0;height:1.5px;background:rgba(246,244,238,.55);transform-origin:left;transform:scaleX(0);transition:transform 1.2s var(--ease) .2s}
+.num{padding:clamp(22px,3.5vh,36px) clamp(14px,1.8vw,26px) 0;position:relative}
+.num:first-child{padding-left:0}
+.num+.num::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:rgba(246,244,238,.3);transform-origin:top;transform:scaleY(0);transition:transform .9s var(--ease) .6s}
+.num .big{font-family:var(--fd);font-weight:800;font-size:clamp(64px,8.4vw,130px);line-height:.95;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.num:first-child .big{color:var(--sun)}
+.num p{font-size:clamp(14px,1.2vw,17px);color:var(--lav);margin-top:14px;max-width:24ch}
+
+/* 8 · Via de mão dupla */
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,32px);margin-top:clamp(40px,7vh,72px)}
+.col{position:relative;padding-top:24px}
+.col::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--indigo);transform-origin:left;transform:scaleX(0);transition:transform .9s var(--ease)}
+.col:nth-child(3)::before{background:var(--sun)}
+.col .n{font-family:var(--fd);font-weight:800;font-size:15px;color:var(--indigo)}
+.col:nth-child(3) .n{color:#B8860B}
+.col h3{font-family:var(--fd);font-weight:700;font-size:clamp(21px,2vw,28px);letter-spacing:-.015em;line-height:1.2;margin:14px 0 12px}
+.col p{color:var(--ink2);font-size:16px}
+
+/* 9 · Estratégia */
+.frase{font-family:var(--fd);font-weight:700;font-size:clamp(30px,4.3vw,62px);line-height:1.12;letter-spacing:-.03em;max-width:19ch;position:relative;z-index:1}
+.frase .y{color:var(--sun)}
+.globo{position:absolute;right:-4vw;bottom:-14%;width:clamp(260px,32vw,500px);opacity:0;transition:opacity 1.6s ease .4s;z-index:0}
+
+/* 10 · Encerramento: os bonequinhos viram a logo */
+section.close{background:radial-gradient(70% 60% at 50% 40%,var(--indigo),var(--deep) 60%,var(--night));display:grid;place-items:center;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;padding:clamp(80px,11vh,120px) var(--gut)}
+.flock{position:absolute;inset:0;width:100%;height:100%;z-index:0;overflow:visible}
+.close-in{position:relative;z-index:1;display:grid;justify-items:center;gap:clamp(16px,2.6vh,26px);pointer-events:none}
+.slot{width:var(--S,180px);height:var(--S,180px);display:grid;place-items:center}
+.tap{white-space:nowrap;pointer-events:auto;font-family:var(--fd);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--night);background:var(--sun);border:0;border-radius:99px;padding:14px 22px;cursor:pointer;animation:pulso 2.2s ease-out infinite;transition:opacity .4s,transform .4s}
+.close.forming .tap,.close.formed .tap{opacity:0;transform:scale(.8);pointer-events:none}
+.logo-g{opacity:0;transition:opacity .5s}
+.close.forming .logo-g,.close.formed .logo-g{opacity:1}
+.lg-draw{stroke-dasharray:120;stroke-dashoffset:120;transition:stroke-dashoffset 1.3s cubic-bezier(.6,0,.2,1) .15s}
+.close.forming .lg-draw,.close.formed .lg-draw{stroke-dashoffset:0}
+.lg-cap{opacity:0;transform:translateY(-14px);transition:opacity .6s .7s,transform .9s cubic-bezier(.2,.9,.3,1.3) .7s}
+.close.forming .lg-cap,.close.formed .lg-cap{opacity:1;transform:none}
+.lg-tassel{transform-origin:76px 34.5px;transform-box:view-box}
+.close.formed .lg-tassel{animation:balanca 3.6s ease-in-out infinite}
+.halo{opacity:0;transition:opacity 1s}
+.close.formed .halo{opacity:1}
+.wave{fill:none;stroke:#F6B92B;stroke-width:.6;opacity:0;transform-origin:50px 63px;transform-box:view-box}
+.close.formed .wave{animation:onda 1.4s cubic-bezier(.2,.7,.2,1) forwards}
+.close.formed .wave.w2{animation-delay:.18s}
+.stage{display:grid}
+.stage>*{grid-area:1/1}
+.before{font-family:var(--fd);font-weight:600;font-size:clamp(20px,2.4vw,34px);line-height:1.25;color:var(--mist);max-width:22ch;align-self:center;justify-self:center;transition:opacity .5s,transform .5s}
+.before b{color:var(--paper);font-weight:700}
+.close.forming .before,.close.formed .before{opacity:0;transform:translateY(-10px)}
+.depois{display:grid;justify-items:center;gap:14px}
+.depois .eyebrow{margin:0;justify-content:center}
+.h-l{font-family:var(--fd);font-size:clamp(36px,5.4vw,84px);font-weight:800;line-height:1.02;letter-spacing:-.04em}
+.split .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em}
+.split .w>span{display:inline-block;transform:translateY(105%);transition:transform .9s var(--ease)}
+.close .eyebrow{color:var(--sun)}
+.close .eyebrow.after{transition-delay:.1s}
+.contatos{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;max-width:760px}
+.contatos a{pointer-events:auto;display:inline-flex;align-items:center;gap:9px;font-family:var(--fd);font-weight:600;font-size:clamp(13.5px,1.15vw,15.5px);padding:11px 18px;border-radius:99px;border:1px solid rgba(220,224,247,.35);background:rgba(20,24,58,.45);color:var(--paper);text-decoration:none;transition:background .25s,border-color .25s,transform .25s}
+.contatos a:hover{background:var(--sun);border-color:var(--sun);color:var(--night);transform:translateY(-2px)}
+.contatos a:hover svg{stroke:var(--night)}
+.contatos svg{width:17px;height:17px;flex:none;stroke:var(--sun);transition:stroke .25s}
+.contatos a b{font-weight:700}
+.after{opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .8s .5s,transform .8s .5s,visibility 0s 1.3s}
+.close.formed .after{opacity:1;visibility:visible;transform:none;transition:opacity .8s .5s,transform .8s .5s,visibility 0s 0s}
+.contatos.after{transition-delay:.85s}
+.assina.after{transition-delay:1.15s}
+.assina{font-size:12.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--mist)}
+.close.formed .split .w>span{transform:none}
+.close:focus-visible{outline:none}
+.close:focus-visible .slot{outline:2px solid var(--sun);outline-offset:8px;border-radius:50%}
+
+/* ===== Entradas com a rolagem ===== */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
+.in .rv,.rv.in{opacity:1;transform:none}
+.d1{transition-delay:.1s!important}.d2{transition-delay:.2s!important}.d3{transition-delay:.3s!important}.d4{transition-delay:.4s!important}.d5{transition-delay:.5s!important}.d6{transition-delay:.6s!important}
+.titulo.split .w>span,.frase.split .w>span,.capa-h .w>span{display:inline-block;transform:translateY(108%);transition:transform .95s var(--ease)}
+.titulo.split .w,.frase.split .w,.capa-h .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.1em;margin-bottom:-.1em}
+.in .titulo.split .w>span,.in .frase.split .w>span,.capa-h.in .w>span{transform:none}
+.in .regua,.in .numeros::before,.in .num+.num::before,.in .lista .it::after{transform:none}
+.in .col::before{transform:none}
+.in .col:nth-child(2)::before{transition-delay:.25s}.in .col:nth-child(3)::before{transition-delay:.5s}
+.in .lista .it:nth-child(2)::after{transition-delay:.15s}.in .lista .it:nth-child(3)::after{transition-delay:.3s}
+.lista .it{opacity:0;transform:translateX(40px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.in .lista .it{opacity:1;transform:none}
+.in .lista .it:nth-child(2){transition-delay:.12s}.in .lista .it:nth-child(3){transition-delay:.24s}.in .lista .it:nth-child(4){transition-delay:.36s}
+.capelo{opacity:0;transform:translateY(80px) rotate(-30deg)}
+.in .capelo{animation:joga 1.4s cubic-bezier(.25,.9,.3,1.15) .35s forwards}
+.in .capelo svg{animation:flutua 5s ease-in-out 1.9s infinite}
+.in .globo{opacity:.16}
+
+@keyframes traca{to{stroke-dashoffset:0}}
+@keyframes capelo{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:none}}
+@keyframes orbita{from{opacity:0;transform:rotate(calc(var(--a) - 80deg)) scale(.4)}to{opacity:1;transform:rotate(var(--a))}}
+@keyframes halo{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(1.9)}}
+@keyframes balanca{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(6deg)}}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes quica{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@keyframes joga{0%{opacity:0;transform:translateY(80px) rotate(-30deg)}55%{opacity:1;transform:translateY(-26px) rotate(14deg)}100%{opacity:1;transform:none}}
+@keyframes flutua{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-8px) rotate(-3deg)}}
+@keyframes onda{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(2.9)}}
+@keyframes pulso{0%{box-shadow:0 0 0 0 rgba(246,185,43,.45)}70%{box-shadow:0 0 0 22px rgba(246,185,43,0)}100%{box-shadow:0 0 0 0 rgba(246,185,43,0)}}
+
+/* ===== Celular ===== */
+@media (max-width:900px){
+  #capa{grid-template-columns:1fr;grid-template-rows:auto 46svh}
+  .capa-txt{order:1;gap:36px;padding-top:96px;padding-bottom:40px}
+  .capa-arte{order:2}
+  .simbolo{width:min(58%,260px)}
+  .rolar{display:none}
+  .duas,.pratica,.lei-topo,.cards3,.grid4,.cols3{grid-template-columns:1fr}
+  .card{min-height:0}
+  .numeros{grid-template-columns:1fr 1fr;row-gap:28px}
+  .num:nth-child(3){padding-left:0}
+  .num:nth-child(3)::before{display:none}
+  nav.dots{display:none}
+  .capelo{width:76px;top:auto;bottom:32px}
+  .globo{width:240px;right:-40px;bottom:-60px}
+  section.tela{padding-top:96px;padding-bottom:72px}
+}
+
+/* ===== Quem prefere menos movimento: tudo aparece pronto ===== */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
+  .s-tr{stroke-dashoffset:0}.s-cap,.s-p{opacity:1}
+}
+
+@media print{
+  #ceu,.brilho,.progresso,header.top,nav.dots,.rolar{display:none}
+  section.tela{min-height:auto;page-break-after:always}
+  .rv,.lista .it,.capelo{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body data-tema="noite">
+<canvas id="ceu" aria-hidden="true"></canvas>
+<div class="brilho" aria-hidden="true"></div>
+<div class="progresso" id="progresso"></div>
+
+<header class="top">
+  <div class="marca" aria-hidden="true">
+    <svg viewBox="16 14 68 78"><circle class="tr" cx="50" cy="63" r="17" fill="none" stroke-width="3.6"/><ellipse class="tr" cx="50" cy="63" rx="7" ry="17" fill="none" stroke-width="3"/><path class="tr" d="M33.5 63 H66.5 M36 71.5 H64" fill="none" stroke-width="3" stroke-linecap="round"/><path class="fl" d="M50 18 L82 31 L50 44 L18 31 Z"/><path class="fl" d="M33 37 v8.5 q17 7.5 34 0 V37 L50 44 Z"/><path d="M50 31 L76 34.5 V40" fill="none" stroke="#F6B92B" stroke-width="2.4" stroke-linecap="round"/><circle cx="76" cy="42.5" r="3.2" fill="#F6B92B"/></svg>
+    MEU ESTÁGIO
+  </div>
+  <div class="contador" id="contador" aria-hidden="true">01 / 10</div>
+</header>
+
+<nav class="dots" id="dots" aria-label="Telas da apresentação"></nav>
+
+<main>
+
+  <!-- 1 · CAPA -->
+  <section class="tela" id="capa" data-tema="noite" data-nome="Capa">
+    <div class="capa-txt">
+      <div class="capa-marca rv" id="capaMarca">
+        <p>MEU ESTÁGIO</p>
+        <p>Agência de Estágios · Paraná</p>
+      </div>
+      <div>
+        <h1 class="capa-h" id="capaH">Conectando talentos a <span class="y">experiências únicas.</span></h1>
+        <p class="capa-sub rv" id="capaSub">Conheça a nossa agência e as principais características do contrato de estágio.</p>
+      </div>
+    </div>
+    <div class="capa-arte">
+      <svg class="orbitas" viewBox="0 0 740 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g opacity=".2" fill="none" stroke="#F6F4EE" stroke-width="1.5">
+          <circle cx="370" cy="540" r="300"/>
+          <circle cx="370" cy="540" r="420"/>
+          <ellipse cx="370" cy="540" rx="150" ry="420"><animate attributeName="rx" values="150;40;150;260;150" dur="18s" repeatCount="indefinite"/></ellipse>
+        </g>
+        <g class="giro"><circle cx="370" cy="540" r="360" fill="none" stroke="#F6B92B" stroke-width="1.5" stroke-dasharray="2 14" opacity=".35"/></g>
+        <circle r="5" fill="#F6B92B"><animateMotion dur="26s" repeatCount="indefinite" path="M370 120 a420 420 0 1 1 -0.1 0"/></circle>
+        <circle r="4" fill="#DCE0F7" opacity=".85"><animateMotion dur="19s" repeatCount="indefinite" path="M370 840 a300 300 0 1 0 0.1 0"/></circle>
+        <circle r="3.5" fill="#F6F4EE" opacity=".7"><animateMotion dur="31s" begin="-12s" repeatCount="indefinite" path="M370 120 a420 420 0 1 1 -0.1 0"/></circle>
+      </svg>
+      <svg class="simbolo" viewBox="0 0 100 100" role="img" aria-label="Símbolo Meu Estágio: capelo sobre um globo com pessoas ao redor">
+        <circle class="s-halo" cx="50" cy="63" r="30" fill="none" stroke="#F6B92B" stroke-width=".5"/>
+        <circle class="s-tr" cx="50" cy="63" r="17" fill="none" stroke="#F6F4EE" stroke-width="3.6"/>
+        <ellipse class="s-tr b" cx="50" cy="63" rx="7" ry="17" fill="none" stroke="#F6F4EE" stroke-width="3"/>
+        <path class="s-tr c" d="M33.5 63 H66.5 M36 71.5 H64" fill="none" stroke="#F6F4EE" stroke-width="3" stroke-linecap="round"/>
+        <g class="s-p" style="--a:-150deg;--d:1.5s"><g transform="translate(50 34) scale(1.35)"><circle cx="0" cy="-3.4" r="3" fill="#AEB8EE"/><path d="M-5 4.4 Q0 -2.6 5 4.4 Z" fill="#AEB8EE"/></g></g>
+        <g class="s-p" style="--a:-110deg;--d:1.62s"><g transform="translate(50 34) scale(1.35)"><circle cx="0" cy="-3.4" r="3" fill="#F6B92B"/><path d="M-5 4.4 Q0 -2.6 5 4.4 Z" fill="#F6B92B"/></g></g>
+        <g class="s-p" style="--a:-70deg;--d:1.74s"><g transform="translate(50 34) scale(1.35)"><circle cx="0" cy="-3.4" r="3" fill="#F6F4EE"/><path d="M-5 4.4 Q0 -2.6 5 4.4 Z" fill="#F6F4EE"/></g></g>
+        <g class="s-p" style="--a:70deg;--d:1.86s"><g transform="translate(50 34) scale(1.35)"><circle cx="0" cy="-3.4" r="3" fill="#AEB8EE"/><path d="M-5 4.4 Q0 -2.6 5 4.4 Z" fill="#AEB8EE"/></g></g>
+        <g class="s-p" style="--a:110deg;--d:1.98s"><g transform="translate(50 34) scale(1.35)"><circle cx="0" cy="-3.4" r="3" fill="#F6B92B"/><path d="M-5 4.4 Q0 -2.6 5 4.4 Z" fill="#F6B92B"/></g></g>
+        <g class="s-p" style="--a:150deg;--d:2.1s"><g transform="translate(50 34) scale(1.35)"><circle cx="0" cy="-3.4" r="3" fill="#F6F4EE"/><path d="M-5 4.4 Q0 -2.6 5 4.4 Z" fill="#F6F4EE"/></g></g>
+        <g class="s-cap">
+          <path d="M50 18 L82 31 L50 44 L18 31 Z" fill="#F6F4EE"/>
+          <path d="M33 37 v8.5 q17 7.5 34 0 V37 L50 44 Z" fill="#F6F4EE"/>
+          <g class="s-borla"><path d="M50 31 L76 34.5 V40" fill="none" stroke="#F6B92B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="76" cy="42.5" r="3.2" fill="#F6B92B"/></g>
+        </g>
+      </svg>
+    </div>
+    <a class="rolar" href="#quem"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 4v16M5 13l7 7 7-7"/></svg>Role para conhecer</a>
+  </section>
+
+  <!-- 2 · QUEM SOMOS -->
+  <section class="tela t-papel" id="quem" data-tema="papel" data-nome="Quem somos">
+    <div class="miolo">
+      <p class="eyebrow rv">01 · Quem somos</p>
+      <h2 class="titulo">Somos agentes de integração.</h2>
+      <div class="regua"></div>
+      <div class="duas">
+        <p class="lead rv d3">Encaminhamos estudantes às vagas que as empresas parceiras abrem conosco.</p>
+        <p class="corpo rv d4">Fazemos o alinhamento do perfil solicitado e acompanhamos todo o processo, com apoio ativo à empresa e ao estagiário do início ao fim do contrato.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · COMO TRABALHAMOS -->
+  <section class="tela t-papel" id="como" data-tema="papel" data-nome="Como trabalhamos">
+    <div class="miolo">
+      <p class="eyebrow rv">02 · Como trabalhamos</p>
+      <h2 class="titulo m">Cuidamos do processo inteiro.</h2>
+      <div class="cards3">
+        <div class="card rv d2"><p class="n">01</p><h3>Encaminhamento</h3><p>A empresa abre a vaga, nós alinhamos o perfil e enviamos os candidatos certos.</p></div>
+        <div class="card rv d3"><p class="n">02</p><h3>Documentação</h3><p>Termos de compromisso, contratos e convênios com as instituições de ensino.</p></div>
+        <div class="card destaque rv d4"><p class="n">03</p><h3>Plataforma de gestão</h3><p>Empresas e estagiários acompanham contratos e cadastro a qualquer momento.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · POR QUE TER ESTAGIÁRIOS -->
+  <section class="tela t-sol" id="porque" data-tema="sol" data-nome="Por que ter estagiários">
+    <div class="capelo" aria-hidden="true"><svg viewBox="16 16 68 32"><path d="M50 18 L82 31 L50 44 L18 31 Z" fill="#14183A"/><path d="M33 37 v8.5 q17 7.5 34 0 V37 L50 44 Z" fill="#14183A"/><path d="M50 31 L76 34.5 V40" fill="none" stroke="#14183A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="76" cy="42.5" r="3.2" fill="#14183A"/></svg></div>
+    <div class="miolo">
+      <p class="eyebrow rv">03 · Por que ter estagiários</p>
+      <h2 class="titulo">Estagiários fortalecem equipes e formam os talentos de amanhã.</h2>
+      <p class="corpo rv d4">Ter estagiários é uma prática vantajosa tanto no operacional quanto no estratégico, e traz para dentro da empresa ideias novas e soluções criativas.</p>
+    </div>
+  </section>
+
+  <!-- 5 · VANTAGENS -->
+  <section class="tela t-noite" id="vantagens" data-tema="noite" data-nome="Vantagens">
+    <div class="miolo">
+      <p class="eyebrow rv">04 · Vantagens</p>
+      <h2 class="titulo m">Quatro vantagens de ter estagiários.</h2>
+      <div class="grid4">
+        <div class="vant rv d2"><span class="n">01</span><h3>Talentos em formação</h3><p>Uma chance de identificar futuros colaboradores com potencial de crescer na empresa.</p></div>
+        <div class="vant rv d3"><span class="n">02</span><h3>Ideias renovadas</h3><p>Estudantes trazem conhecimento atualizado e um olhar novo sobre os processos.</p></div>
+        <div class="vant rv d4"><span class="n">03</span><h3>Custo-benefício</h3><p>Sem vínculo empregatício nem encargos trabalhistas, desde que a lei seja cumprida.</p></div>
+        <div class="vant destaque rv d5"><span class="n">04</span><h3>Apoio operacional</h3><p>Ajuda nas tarefas do dia a dia e libera a equipe para o que é estratégico.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · NA PRÁTICA -->
+  <section class="tela t-papel" id="pratica" data-tema="papel" data-nome="Na prática">
+    <div class="miolo pratica">
+      <div>
+        <p class="eyebrow rv">05 · Na prática</p>
+        <h2 class="titulo m">Como o estagiário ajuda a sua empresa.</h2>
+      </div>
+      <div class="lista">
+        <div class="it"><h3>Rotina</h3><p>Auxilia nas tarefas do dia a dia e dá fluidez aos processos.</p></div>
+        <div class="it"><h3>Projetos</h3><p>Participa de projetos sob supervisão e contribui com ideias novas.</p></div>
+        <div class="it"><h3>Análises</h3><p>Faz pesquisas, análises e relatórios que apoiam a tomada de decisão.</p></div>
+        <div class="it"><h3>Inovação</h3><p>Traz a atualização tecnológica e acadêmica que está aprendendo nos estudos.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · LEI DO ESTÁGIO -->
+  <section class="tela t-indigo" id="lei" data-tema="indigo" data-nome="Lei do Estágio">
+    <div class="miolo">
+      <div class="lei-topo">
+        <div>
+          <p class="eyebrow rv">06 · Lei do Estágio · nº 11.788/2008</p>
+          <h2 class="titulo m">O que a lei garante, em quatro números.</h2>
+        </div>
+        <p class="corpo rv d3">A relação do estágio com o Ministério do Trabalho é regulamentada por lei. Seguindo os requisitos, a empresa fica segura e o estudante, protegido.</p>
+      </div>
+      <div class="numeros">
+        <div class="num rv d1"><p class="big"><span data-de="9" data-ate="0">0</span></p><p>vínculo empregatício, com termo de compromisso entre estudante, empresa e escola</p></div>
+        <div class="num rv d2"><p class="big"><span data-ate="6">6</span>h</p><p>por dia no máximo, com limite de 30 horas semanais</p></div>
+        <div class="num rv d3"><p class="big"><span data-ate="2">2</span></p><p>anos de duração máxima na mesma empresa</p></div>
+        <div class="num rv d4"><p class="big"><span data-ate="3">3</span></p><p>níveis que podem estagiar: médio, técnico e superior</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · VIA DE MÃO DUPLA -->
+  <section class="tela t-papel" id="mao" data-tema="papel" data-nome="Via de mão dupla">
+    <div class="miolo">
+      <p class="eyebrow rv">07 · Via de mão dupla</p>
+      <h2 class="titulo m">O que esperamos do estagiário.</h2>
+      <div class="cols3">
+        <div class="col rv d2"><p class="n">01</p><h3>Cumprir o plano de estágio</h3><p>Realizar tarefas alinhadas aos estudos e contribuir para os objetivos da empresa.</p></div>
+        <div class="col rv d3"><p class="n">02</p><h3>Respeitar as normas internas</h3><p>Como qualquer colaborador, seguir as políticas e as regras da empresa.</p></div>
+        <div class="col rv d4"><p class="n">03</p><h3>Compromisso e aprendizado</h3><p>Buscar crescimento profissional enquanto contribui para o sucesso da empresa.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · ESTRATÉGIA -->
+  <section class="tela t-noite" id="estrategia" data-tema="noite" data-nome="Estratégia para as empresas">
+    <svg class="globo" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="#DCE0F7" stroke-width="7"><circle cx="100" cy="100" r="88"/><ellipse cx="100" cy="100" rx="38" ry="88"><animate attributeName="rx" values="38;6;38;70;38" dur="12s" repeatCount="indefinite"/></ellipse><path d="M12 100 H188 M24 142 H176 M24 58 H176" stroke-linecap="round"/></g></svg>
+    <div class="miolo">
+      <p class="eyebrow rv">08 · Estratégia para as empresas</p>
+      <h2 class="frase">Ter estagiários é formar talentos, impulsionar a inovação e aumentar a produtividade, <span class="y">enquanto ajuda a formar novos profissionais.</span></h2>
+    </div>
+  </section>
+
+  <!-- 10 · ENCERRAMENTO -->
+  <section class="tela close" id="fim" data-tema="fim" data-nome="Vamos conversar" aria-label="Vamos conversar" tabindex="0">
+    <svg class="flock" id="flock" aria-hidden="true"></svg>
+    <div class="close-in">
+      <div class="slot" id="slot"><button class="tap" id="tap" type="button">Clique para conectar</button></div>
+      <div class="stage">
+        <p class="before">Empresas e talentos, <b>cada um procurando o outro.</b></p>
+        <div class="depois">
+          <p class="eyebrow after">Vamos conversar</p>
+          <h2 class="h-l split"><span class="w"><span>Abra</span></span> <span class="w"><span style="transition-delay:.05s">sua</span></span> <span class="w"><span style="transition-delay:.1s">vaga</span></span><br><span class="w"><span style="transition-delay:.15s">com</span></span> <span class="w"><span style="transition-delay:.2s">a</span></span> <span class="w"><span style="transition-delay:.25s">gente.</span></span></h2>
+        </div>
+      </div>
+      <div class="contatos after">
+        <a href="https://wa.me/5543999463256" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.7 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg><span><b>Matheus</b> · 43 99946-3256</span></a>
+        <a href="https://wa.me/5543998483861" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.7 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg><span><b>Ricardo</b> · 43 99848-3861</span></a>
+        <a href="mailto:meuestagiopr@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>meuestagiopr@gmail.com</span></a>
+        <a href="https://www.instagram.com/meuestagiopr/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg><span>@meuestagiopr</span></a>
+      </div>
+      <p class="assina after">Meu Estágio · Agência de Estágios</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var secs=[].slice.call(document.querySelectorAll('section.tela'));
+  var total=secs.length;
+
+  /* Navegação: pontos, contador, barra de progresso e cor do cabeçalho */
+  var dots=document.getElementById('dots');
+  dots.innerHTML=secs.map(function(s){return '<a href="#'+s.id+'" aria-label="'+s.dataset.nome+'" title="'+s.dataset.nome+'"></a>'}).join('');
+  var links=[].slice.call(dots.children), atual=0;
+  function pad(n){return (n<10?'0':'')+n}
+  function onScroll(){
+    var y=window.scrollY,h=document.documentElement.scrollHeight-innerHeight;
+    document.getElementById('progresso').style.width=(h>0?y/h*100:0)+'%';
+    var i=0;secs.forEach(function(s,k){if(s.offsetTop-innerHeight*.45<=y)i=k});
+    atual=i;
+    links.forEach(function(a,k){a.classList.toggle('on',k===i)});
+    document.getElementById('contador').textContent=pad(i+1)+' / '+pad(total);
+    /* o cabeçalho pega a cor da tela que está sob ele */
+    var t=secs[0].dataset.tema;secs.forEach(function(s){if(s.offsetTop-40<=y)t=s.dataset.tema});
+    document.body.dataset.tema=t;
+    document.body.classList.toggle('rolou',y>innerHeight*.5);
+  }
+  addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);onScroll();
+
+  /* Teclado: setas, Page Up/Down e espaço passam de tela em tela */
+  function vai(k){k=Math.max(0,Math.min(total-1,k));secs[k].scrollIntoView({behavior:reduce?'auto':'smooth'})}
+  addEventListener('keydown',function(e){
+    if(e.altKey||e.ctrlKey||e.metaKey)return;
+    var t=e.target,el=t&&t.closest?t:null;if(el&&el.closest('input,textarea,select'))return;if(e.key===' '&&el&&(el.id==='fim'||el.closest('a,button')))return;
+    if(['ArrowDown','PageDown',' '].indexOf(e.key)>=0){e.preventDefault();vai(atual+1)}
+    else if(['ArrowUp','PageUp'].indexOf(e.key)>=0){e.preventDefault();vai(atual-1)}
+    else if(e.key==='Home'){e.preventDefault();vai(0)}
+    else if(e.key==='End'){e.preventDefault();vai(total-1)}
+  });
+
+  /* Títulos sobem palavra por palavra */
+  function quebra(el,passo){
+    var d=0;
+    function parte(txt){return txt.split(/(\s+)/).map(function(t){if(!t.trim())return t;var s='<span class="w"><span style="transition-delay:'+(d*passo).toFixed(2)+'s">'+t+'</span></span>';d++;return s}).join('')}
+    var html='';
+    [].slice.call(el.childNodes).forEach(function(n){
+      if(n.nodeType===3)html+=parte(n.textContent);
+      else{var c=n.cloneNode(false);c.innerHTML=parte(n.textContent);html+=c.outerHTML}
+    });
+    el.innerHTML=html;
+  }
+  document.querySelectorAll('.titulo,.frase').forEach(function(h){quebra(h,.05);h.classList.add('split')});
+  var capaH=document.getElementById('capaH');quebra(capaH,.07);
+  /* Capa: entra assim que a página abre */
+  requestAnimationFrame(function(){setTimeout(function(){capaH.classList.add('in');document.getElementById('capaMarca').classList.add('in');document.getElementById('capaSub').classList.add('in')},150)});
+  document.getElementById('capaSub').style.transitionDelay='.75s';
+
+  /* Lei: números contam */
+  function conta(el){
+    var ate=+el.dataset.ate, de=el.dataset.de!==undefined?+el.dataset.de:0, t0=null, dur=1100;
+    if(reduce){el.textContent=ate;return}
+    el.textContent=de;
+    function f(now){if(!t0)t0=now;var p=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-p,3);el.textContent=Math.round(de+(ate-de)*e);if(p<1)requestAnimationFrame(f)}
+    setTimeout(function(){requestAnimationFrame(f)},350);
+  }
+
+  /* Cada tela anima quando chega */
+  var alvos=secs.slice(1);
+  function entra(s){
+    s.classList.add('in');
+    if(s.id==='lei')s.querySelectorAll('[data-ate]').forEach(conta);
+  }
+  if(reduce||!('IntersectionObserver' in window)){alvos.forEach(entra)}
+  else{
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){entra(e.target);io.unobserve(e.target)}})},{threshold:.22});
+    alvos.forEach(function(s){io.observe(s)});
+  }
+
+  /* Contatos do encerramento abrem sem desmontar a logo */
+  document.querySelectorAll('#fim a').forEach(function(a){a.addEventListener('click',function(e){e.stopPropagation()})});
+})();
+
+/* ===== Céu com constelações (fundo das telas escuras) ===== */
+(function(){
+  var cv=document.getElementById('ceu'),cx=cv.getContext('2d');
+  function ceu(){
+    var dpr=devicePixelRatio||1,w=cv.width=innerWidth*dpr,h=cv.height=innerHeight*dpr;
+    cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';
+    var seed=7;function r(){return (seed=(seed*16807)%2147483647)/2147483647}
+    var pts=[],n=Math.round(innerWidth*innerHeight/9000);
+    for(var i=0;i<n;i++)pts.push([r()*w,r()*h,r()]);
+    cx.clearRect(0,0,w,h);cx.strokeStyle='rgba(138,151,216,.12)';cx.lineWidth=dpr;
+    var lim=130*dpr;
+    for(i=0;i<pts.length;i++)for(var j=i+1;j<pts.length;j++){var dx=pts[i][0]-pts[j][0],dy=pts[i][1]-pts[j][1];if(dx*dx+dy*dy<lim*lim&&pts[i][2]>.55){cx.beginPath();cx.moveTo(pts[i][0],pts[i][1]);cx.lineTo(pts[j][0],pts[j][1]);cx.stroke()}}
+    pts.forEach(function(p){cx.fillStyle=p[2]>.93?'rgba(246,185,43,.85)':'rgba(220,224,247,.55)';cx.beginPath();cx.arc(p[0],p[1],(p[2]>.93?1.8:1.1)*dpr,0,7);cx.fill()});
+  }
+  ceu();addEventListener('resize',ceu);
+})();
+
+/* ===== Encerramento: bonequinhos que viram a logo (mesma animação da apresentação do Ranan) ===== */
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  var sec=document.getElementById('fim'),svg=document.getElementById('flock'),slot=document.getElementById('slot'),tap=document.getElementById('tap');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var PAPER='#F6F4EE',SUN='#F6B92B',LAV='#AEB8EE';
+  var palette=[PAPER,SUN,LAV];
+  var TARGETS=[[-150,LAV],[-110,SUN],[-70,PAPER],[70,LAV],[110,SUN],[150,PAPER]];
+  var N=innerWidth<700?18:30;
+  if(matchMedia('(pointer: coarse)').matches){tap.textContent='Toque para conectar'}
+  function el(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+  var linesG=el('g',{},svg);
+  var logo=el('g',{'class':'logo-g'},svg);
+  el('circle',{'class':'wave',cx:50,cy:63,r:17},logo);el('circle',{'class':'wave w2',cx:50,cy:63,r:17},logo);
+  el('circle',{'class':'halo',cx:50,cy:63,r:40,fill:'none',stroke:'#AEB6EA','stroke-width':.25,'stroke-dasharray':'.8 2.2',opacity:.5},logo);
+  el('circle',{'class':'lg-draw',cx:50,cy:63,r:17,fill:'none',stroke:PAPER,'stroke-width':3.6},logo);
+  el('ellipse',{'class':'lg-draw',cx:50,cy:63,rx:7,ry:17,fill:'none',stroke:PAPER,'stroke-width':3},logo);
+  el('path',{'class':'lg-draw',d:'M33.5 63 H66.5 M36 71.5 H64',fill:'none',stroke:PAPER,'stroke-width':3,'stroke-linecap':'round'},logo);
+  var cap=el('g',{'class':'lg-cap'},logo);
+  el('path',{d:'M50 18 L82 31 L50 44 L18 31 Z',fill:PAPER},cap);
+  el('path',{d:'M33 37 v8.5 q17 7.5 34 0 V37 L50 44 Z',fill:PAPER},cap);
+  var tas=el('g',{'class':'lg-tassel'},cap);
+  el('path',{d:'M50 31 L76 34.5 V40',fill:'none',stroke:SUN,'stroke-width':2.4,'stroke-linecap':'round','stroke-linejoin':'round'},tas);
+  el('circle',{cx:76,cy:42.5,r:3.2,fill:SUN},tas);
+  var people=[];
+  for(var i=0;i<N;i++){
+    var c=palette[i%3];var g=el('g',{},svg);
+    el('circle',{cx:0,cy:-3.4,r:3,fill:c},g);
+    el('path',{d:'M-5 4.4 Q0 -2.6 5 4.4 Z',fill:c},g);
+    people.push({g:g,c:c,x:0,y:0,vx:0,vy:0,rot:0,base:(Math.random()-.5)*40,ph:Math.random()*6.28,sp:.6+Math.random()*.8,sz:.75+Math.random()*.55,s:0,op:0,slot:null,delay:0});
+  }
+  var used={};
+  TARGETS.forEach(function(tg,ti){for(var j=0;j<people.length;j++){if(!used[j]&&people[j].c===tg[1]){used[j]=1;people[j].slot=ti;break}}});
+  var W,H,S,k,ox,oy,state='float',t0=0;
+  function layout(first){
+    W=sec.clientWidth;H=sec.clientHeight;
+    S=Math.max(150,Math.min(240,Math.min(W,H)*.28));
+    sec.style.setProperty('--S',S+'px');
+    svg.setAttribute('viewBox','0 0 '+W+' '+H);
+    var sr=sec.getBoundingClientRect(),r=slot.getBoundingClientRect();
+    ox=r.left-sr.left;oy=r.top-sr.top;k=S/100;
+    logo.setAttribute('transform','translate('+ox+' '+oy+') scale('+k+')');
+    people.forEach(function(p){
+      if(first){p.x=Math.random()*W;p.y=Math.random()*H;p.vx=(Math.random()-.5)*.8;p.vy=(Math.random()-.5)*.8;p.s=1.35*k*.8*p.sz;p.op=.9}
+      if(p.slot!==null){var a=TARGETS[p.slot][0]*Math.PI/180;p.tx=ox+k*(50+29*Math.sin(a));p.ty=oy+k*(63-29*Math.cos(a));p.trot=TARGETS[p.slot][0];p.ts=1.35*k;p.top=1}
+      else{p.tx=ox+50*k;p.ty=oy+63*k;p.trot=0;p.ts=0;p.top=0}
+      if(state==='formed'){p.x=p.tx;p.y=p.ty;p.rot=p.trot;p.s=p.ts;p.op=p.top}
+    });
+  }
+  function form(){
+    state='forming';sec.classList.add('forming');t0=performance.now();
+    var order=people.slice().sort(function(a,b){return (a.slot!==null)-(b.slot!==null)});
+    order.forEach(function(p,i){p.delay=i*(p.slot!==null?40:22)});
+    if(reduce)people.forEach(function(p){p.x=p.tx;p.y=p.ty;p.rot=p.trot;p.s=p.ts;p.op=p.top});
+  }
+  function scatter(){
+    state='float';sec.classList.remove('forming','formed');
+    people.forEach(function(p){var a=Math.random()*6.28,v=2+Math.random()*3;
+      if(p.slot===null){p.x=ox+50*k;p.y=oy+63*k}
+      p.vx=Math.cos(a)*v;p.vy=Math.sin(a)*v;p.op=.9});
+  }
+  function toggle(){if(state==='float')form();else if(state==='formed')scatter()}
+  sec.addEventListener('click',toggle);
+  sec.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle()}});
+  tap.addEventListener('click',function(e){e.stopPropagation();toggle()});
+  var lineEls=[];for(var a=0;a<N;a++)for(var b=a+1;b<N;b++){lineEls.push([a,b,el('line',{stroke:'#AEB6EA','stroke-width':1},linesG),1])}
+  var lineAlpha=1;
+  function norm(d){while(d>180)d-=360;while(d<-180)d+=360;return d}
+  function tick(now){
+    var t=now/1000;
+    if(state==='float'){
+      people.forEach(function(p){
+        p.vx+=(Math.random()-.5)*.05;p.vy+=(Math.random()-.5)*.05;
+        var sp=Math.hypot(p.vx,p.vy),mx=.7;if(sp>mx){p.vx*=.96;p.vy*=.96}
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x<10){p.x=10;p.vx=Math.abs(p.vx)}if(p.x>W-10){p.x=W-10;p.vx=-Math.abs(p.vx)}
+        if(p.y<10){p.y=10;p.vy=Math.abs(p.vy)}if(p.y>H-10){p.y=H-10;p.vy=-Math.abs(p.vy)}
+        p.rot+=norm(p.base+Math.sin(t*p.sp+p.ph)*18-p.rot)*.08;
+        var bs=1.35*k*.8*p.sz;p.s+=(bs-p.s)*.06;p.op+=(.9-p.op)*.06;
+      });
+    } else if(state==='forming'){
+      var el2=now-t0,done=true;
+      people.forEach(function(p){
+        if(el2<p.delay){done=false;return}
+        var f=p.slot!==null?.075:.09;
+        p.x+=(p.tx-p.x)*f;p.y+=(p.ty-p.y)*f;p.rot+=norm(p.trot-p.rot)*f;p.s+=(p.ts-p.s)*f;
+        if(p.slot===null){var d=Math.hypot(p.tx-p.x,p.ty-p.y);p.op=Math.min(p.op,Math.min(1,d/(40*k)))}
+        if(Math.hypot(p.tx-p.x,p.ty-p.y)>.4||Math.abs(p.ts-p.s)>.01)done=false;
+      });
+      if(done||el2>4200){state='formed';sec.classList.add('formed');people.forEach(function(p){p.x=p.tx;p.y=p.ty;p.rot=p.trot;p.s=p.ts;p.op=p.top})}
+    }
+    lineAlpha+=((state==='float'?1:0)-lineAlpha)*.08;
+    var maxD=Math.min(190,Math.max(120,W*.12));
+    for(var q=0;q<lineEls.length;q++){var L=lineEls[q],A=people[L[0]],B=people[L[1]],d=Math.hypot(A.x-B.x,A.y-B.y),o=d<maxD?(1-d/maxD)*.35*lineAlpha*Math.min(A.op,B.op):0;
+      if(o<.01){if(L[3]){L[2].setAttribute('opacity',0);L[3]=0}continue}
+      L[2].setAttribute('x1',A.x.toFixed(1));L[2].setAttribute('y1',A.y.toFixed(1));L[2].setAttribute('x2',B.x.toFixed(1));L[2].setAttribute('y2',B.y.toFixed(1));L[2].setAttribute('opacity',o.toFixed(2));L[3]=1}
+    people.forEach(function(p){
+      p.g.setAttribute('transform','translate('+p.x.toFixed(2)+' '+p.y.toFixed(2)+') rotate('+p.rot.toFixed(2)+') scale('+Math.max(p.s,0).toFixed(3)+')');
+      p.g.setAttribute('opacity',Math.max(0,Math.min(1,p.op)).toFixed(2));
+    });
+    requestAnimationFrame(tick);
+  }
+  layout(true);requestAnimationFrame(tick);
+  var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){layout(false)},120)});
+})();
+
+
+</script>
+</body>
+</html>

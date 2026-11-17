@@ -2,4 +2,5 @@
 
 Páginas da Meu Estágio (cliente do Estúdio Pi).
 
-- /investimento: apresentação do investimento no sistema
+- /apresentacao: apresentação institucional animada (a raiz do site abre nela)
+- /investimento: apresentação do investimento no sistema (uso nos sócios)
